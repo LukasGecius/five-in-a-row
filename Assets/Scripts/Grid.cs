@@ -15,31 +15,38 @@ public class Grid : MonoBehaviour
     [SerializeField]
     private Vector2 gridSize;
     [SerializeField]
-    private Vector2 gridOffset; // Setting grid
+    public Vector2 gridOffset; // Setting grid
     /* 
      * Cell info
      */
     [SerializeField]
     private Sprite cellSprite;
-    private Vector3 cellSize;
+    public Vector3 cellSize;
     private Vector3 cellScale;
     private GameObject[,] BoxArr;
 
-    // Start is called before the first frame update
+    /*
+     * Info to Stats
+     */
+    Object[] posX;
+    public float[] posY;
+
     void Start()
     {
         InitializeCells();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
+
     }
     void InitializeCells()
     {
-        GameObject cellObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        BoxCollider cellColider = cellObject.GetComponent<BoxCollider>();
+        GameObject cellObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        SphereCollider cellColider = cellObject.GetComponent<SphereCollider>();
 
         cellSize = cellColider.bounds.size; // Getting Colider size
 
@@ -50,11 +57,12 @@ public class Grid : MonoBehaviour
         cellScale.x = newCellsize.x / cellSize.x;
         cellScale.y = newCellsize.y / cellSize.y;
         cellScale.z = newCellsize.z / cellSize.z;
+        
 
 
         cellSize = newCellsize; // From base size to new Size
 
-        cellObject.transform.localScale = new Vector3(cellScale.x - 5, cellScale.y - 5, cellScale.z);
+        cellObject.transform.localScale = new Vector3(cellScale.x - 5, cellScale.y - 5, cellScale.z + 10);
 
         // adjusting grid mapping
         gridOffset.x = -(gridSize.x / 2) + cellSize.x / 2;
@@ -65,23 +73,27 @@ public class Grid : MonoBehaviour
 
         // Instanciating all cells in grid and assigning
         BoxArr = new GameObject[rows, cols];
+
         for (int row = 0; row < rows; row++)
         {
             for (int colm = 0; colm < cols; colm++)
             {
                 // Object position
-                Vector2 pos = new Vector2(colm * cellSize.x + gridOffset.x, row * cellSize.y + gridOffset.y);
+                 Vector2 pos = new Vector2(colm * cellSize.x + gridOffset.x, row * cellSize.y + gridOffset.y);
+                
+                
 
                 // Copying and creating new objects
                 //GameObject Cell0 = Instantiate(cellObject, pos, Quaternion.identity) as GameObject;
                 
                 BoxArr[row, colm] = (GameObject)Instantiate(cellObject, pos, Quaternion.identity) as GameObject;
-                BoxArr[row, colm].AddComponent<MeshRenderer>();
-                BoxArr[row, colm].AddComponent<ColorChanger>();
-
+             //   BoxArr[row, colm].AddComponent<MeshRenderer>();           Not needed, already there.
+             //   BoxArr[row, colm].AddComponent<ColorChanger>();           Not a solution
+                BoxArr[row, colm].name = row + " " + colm;
                 BoxArr[row, colm].transform.parent = transform;
             }
         }
+        Destroy(GameObject.Find("Sphere")); // Removing excess sphere
     }
 
     void CheckGridSize()

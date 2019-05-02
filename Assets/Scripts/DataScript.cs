@@ -2,15 +2,35 @@
 {
     public static int boardSize;
 
-    public static int BoardSize
+    public static float[] CheckerV2posX
     {
         get
         {
-            return BoardSize;
+            return CheckerV2posX;
         }
         set
         {
-            BoardSize = value;
+            for (int i = 0; i < boardSize; i++)
+            {
+                CheckerV2posX[i]
+                
+            }
+            
+        }
+    }
+    public static float[] CheckerV2posY
+    {
+        get
+        {
+            return CheckerV2posY;
+        }
+        set
+        {
+            for (int i = 0; i < boardSize; i++)
+            {
+                CheckerV2posY[i] = value;
+
+            }
         }
     }
 }
