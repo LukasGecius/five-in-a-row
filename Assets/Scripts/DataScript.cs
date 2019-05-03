@@ -12,7 +12,7 @@
         {
             for (int i = 0; i < boardSize; i++)
             {
-                CheckerV2posX[i]
+              //  CheckerV2posX[i]
                 
             }
             
@@ -28,7 +28,7 @@
         {
             for (int i = 0; i < boardSize; i++)
             {
-                CheckerV2posY[i] = value;
+              //  CheckerV2posY[i] = value;
 
             }
         }
