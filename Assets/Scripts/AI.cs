@@ -39,16 +39,17 @@ public class AI : MonoBehaviour
 
     }
 
-    string ignoreTag = "Cell";
+   // string ignoreTag = "Cell";
 
 
     void DangerCheck()
     {
-        
 
+        Rigidbody rb;
 
-        littleChecker = GameObject.Find("Checker:90");
+        littleChecker = GameObject.Find("Checker:00");
         rb = littleChecker.GetComponent<Rigidbody>();
+        //rb.isKinematic = true;
 
         // Shooting checker
 
@@ -58,8 +59,9 @@ public class AI : MonoBehaviour
         }
 
     }
-    private void OnCollisionEnter(Collision col)
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        Debug.Log("Collision");
     }
 }

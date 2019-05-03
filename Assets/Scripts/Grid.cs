@@ -25,9 +25,14 @@ public class Grid : MonoBehaviour
     // Checker Transform
     public Transform checkerPrefab;
 
+
+
+
     void Start()
     {
         InitializeCells();
+
+
 
 
     }
@@ -38,6 +43,9 @@ public class Grid : MonoBehaviour
 
 
     }
+
+
+
     void InitializeCells()
     {
         GameObject cellObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -61,7 +69,7 @@ public class Grid : MonoBehaviour
         cellSize = newCellsize; // From base size to new Size
 
         cellObject.transform.localScale = new Vector3(cellScale.x - 5, cellScale.y - 5, cellScale.z + 10);
-        checkerObj.transform.localScale = new Vector3(cellScale.x / 10, cellScale.y / 10, cellScale.z / 10);
+        checkerObj.transform.localScale = new Vector3(cellScale.x / 11, cellScale.y / 11, cellScale.z / 11);
 
         // adjusting grid mapping
         gridOffset.x = -(gridSize.x / 2) + cellSize.x / 2;
@@ -93,41 +101,61 @@ public class Grid : MonoBehaviour
                 BoxArr[row, colm].name = row + " " + colm;
                 BoxArr[row, colm].transform.parent = transform;
                 BoxArr[row, colm].tag = "Cell";
-                
-                
+                BoxArr[row, colm].GetComponent<Collider>().isTrigger = true;
+                BoxArr[row, colm].AddComponent<Rigidbody>();
+                BoxArr[row, colm].GetComponent<Rigidbody>().useGravity = false;
+                BoxArr[row, colm].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+               // BoxArr[row, colm].AddComponent<CollisionDetection>();
+                 //  BoxArr[row,colm].AddComponent<ChangeTest>();
+                // BoxArr[row, colm].AddComponent<Renderer>();
+
+
+
+
 
                 // Adding checkers
-                
+
                 if (row == 0)
                 {
                     checker[row,colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row,colm].name = "Checker:" + row + "" + colm;
-                    checker[row, colm].tag = "BottomCheckers";
+                  //  checker[row, colm].tag = "BottomCheckers";
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.green);
 
                     checker[row, colm].AddComponent<Rigidbody>();
-                    rb = checker[row, colm].GetComponent<Rigidbody>();
-                    
-                    rb.mass = mass;
-                    rb.angularDrag = 0;
-                 //   rb.useGravity = false;
-                    
-                    
+                   
+
+                //    rb = checker[row, colm].GetComponent<Rigidbody>();
+
+                    checker[row, colm].GetComponent<Collider>().isTrigger = true;
+
+                    checker[row, colm].AddComponent<CollisionDetection>();
+
+
+
+
+
 
                 }
                 if (colm == 0 && row !=0 )
                 {
                     checker[row, colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row, colm].name = "Checker:" + row + "" + colm;
-                    checker[row, colm].tag = "Colm0Checkers";
+                   // checker[row, colm].tag = "Colm0Checkers";
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.red);
 
                     checker[row, colm].AddComponent<Rigidbody>();
-                    
+
+
+                    checker[row, colm].GetComponent<Collider>().isTrigger = true;
+
+
+                    checker[row, colm].AddComponent<CollisionDetection>();
+
 
 
                 }
@@ -135,22 +163,50 @@ public class Grid : MonoBehaviour
                 {
                     checker[row, colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row, colm].name = "Checker:" + row + "" + colm;
-                    checker[row, colm].tag = "LastColCheckers";
+                   // checker[row, colm].tag = "LastColCheckers";
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.gray);
 
                     checker[row, colm].AddComponent<Rigidbody>();
-                    
+
+                    checker[row, colm].GetComponent<Collider>().isTrigger = true;
+
+
+                    checker[row, colm].AddComponent<CollisionDetection>();
+
                 }
 
-    
+                // Checker ignore Collision
+                GameObject[] BottomCheckersObj = GameObject.FindGameObjectsWithTag("BottomCheckers");
+
+                for (int i = 0; i < BottomCheckersObj.Length; i++)
+                {
+                    Physics.IgnoreCollision(BottomCheckersObj[i].GetComponent<Collider>(), BoxArr[row, colm].GetComponent<Collider>());
+                }
+
+                GameObject[] Colm0Checkers = GameObject.FindGameObjectsWithTag("Colm0Checkers");
+
+                for (int i = 0; i < Colm0Checkers.Length; i++)
+                {
+                    Physics.IgnoreCollision(Colm0Checkers[i].GetComponent<Collider>(), BoxArr[row, colm].GetComponent<Collider>());
+                }
+
+                GameObject[] LastColCheckers = GameObject.FindGameObjectsWithTag("LastColCheckers");
+
+                for (int i = 0; i < LastColCheckers.Length; i++)
+                {
+                    Physics.IgnoreCollision(LastColCheckers[i].GetComponent<Collider>(), BoxArr[row, colm].GetComponent<Collider>());
+                }
+
             }
         }
         Destroy(GameObject.Find("Sphere")); // Removing excess sphere
     }
 
-    void CheckGridSize()
+
+
+            void CheckGridSize()
     {
         Gizmos.DrawWireCube(transform.position, gridSize);
     }
