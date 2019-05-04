@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI : MonoBehaviour
+public class RowChecker : MonoBehaviour
 {
-    public Transform checkerPrefab;
-    // Start is called before the first frame update
     void Start()
     {
         
@@ -31,7 +29,7 @@ public class AI : MonoBehaviour
     public Rigidbody rowCheckBody = new Rigidbody();
     // public Rigidbody colmCheckBody = new Rigidbody();
 
-    void RemoveGravity()
+    public void RemoveGravity()
     {
         for(int i = 0; i < Stats.boardSize; i++)
             for(int f = 0; f < Stats.boardSize; f++)
@@ -85,13 +83,11 @@ public class AI : MonoBehaviour
         }
 
 
-        //rb.isKinematic = true;
-
         // Shooting checker
 
         if (Input.GetKeyDown("space"))
         {
-            rowCheckBody.velocity = new Vector3(100, 0, 0); // Overall thinking time depends on checker velocity
+        //    rowCheckBody.velocity = new Vector3(100, 0, 0); // Overall thinking time depends on checker velocity
             
         }
 
@@ -105,20 +101,13 @@ public class AI : MonoBehaviour
     bool WhiteWasSecond;
     private void OnTriggerExit(Collider other)
     {
-
-        //  other.transform.GetComponent<Renderer>().material.color = Color.blue;
-
-        // If the object found is blue:
-        //  Debug.Log("Collided with: " + other.name);
-        // RESETTING IMPORTANT
+        // RESET WHEN 2 THERE ARE TWO WHITES IN A ROW
         if (other.transform.GetComponent<Renderer>().material.color == Color.white && whiteCount == 2)
         {
             blueCount = 0;
             whiteCount = 0;
             WhiteWasSecond = false;
         }
-
-        // Blue white Bue Blue
 
 
         // DangerCheck
@@ -169,17 +158,6 @@ public class AI : MonoBehaviour
         {
             Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 2));
         }
-
-        // IF AFTER ONE BLUE, ONE WHITE, IS TWO BLUES
-
-
-
-        /*
-        if (blueCount == 2 && whiteCount == 1 && other.transform.GetComponent<Renderer>().material.color == Color.blue)
-        {
-            Debug.Log("One danger in pos:" + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 2));
-        }
-        */
 
         collisionCount++;
     }
