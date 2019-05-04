@@ -40,21 +40,31 @@ public class PlayerMove : MonoBehaviour
                 hitInfo.transform.GetComponent<Renderer>().material.color = Color.blue;
             }
         }
-
-
-
-
-            /*   if (Input.GetMouseButtonDown(0))
-               {
-                   Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                   RaycastHit hit;
-                   if (Physics.Raycast(ray, out hit, 1000))
-                   {
-                       currentColor = (currentColor + 1) % length;
-
-                       GetComponent<Renderer>().material.color = colors[currentColor];
-
-                   }
-               }*/
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo, 1000))
+            {
+                print(hitInfo.collider.gameObject.name);
+                hitInfo.transform.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
+
+
+
+
+        /*   if (Input.GetMouseButtonDown(0))
+           {
+               Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+               RaycastHit hit;
+               if (Physics.Raycast(ray, out hit, 1000))
+               {
+                   currentColor = (currentColor + 1) % length;
+
+                   GetComponent<Renderer>().material.color = colors[currentColor];
+
+               }
+           }*/
+    }
 }

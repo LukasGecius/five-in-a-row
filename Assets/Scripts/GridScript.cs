@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Grid : MonoBehaviour
+public class GridScript : MonoBehaviour
 {
 // Grid specs
     private int rows = Stats.boardSize;
@@ -17,7 +17,7 @@ public class Grid : MonoBehaviour
     private Sprite cellSprite;
     public Vector3 cellSize;
     private Vector3 cellScale;
-    private GameObject[,] BoxArr;
+    public GameObject[,] BoxArr;
     public GameObject[,] checker;
 // Info to Stats
     public Rigidbody rb;
@@ -105,9 +105,12 @@ public class Grid : MonoBehaviour
                 BoxArr[row, colm].AddComponent<Rigidbody>();
                 BoxArr[row, colm].GetComponent<Rigidbody>().useGravity = false;
                 BoxArr[row, colm].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+
+               // BoxArr[row, colm].AddComponent<Renderer>();
+                BoxArr[row, colm].transform.GetComponent<Renderer>().material.color = Color.white;
                // BoxArr[row, colm].AddComponent<CollisionDetection>();
-                 //  BoxArr[row,colm].AddComponent<ChangeTest>();
-                // BoxArr[row, colm].AddComponent<Renderer>();
+               //  BoxArr[row,colm].AddComponent<ChangeTest>();
+               // BoxArr[row, colm].AddComponent<Renderer>();
 
 
 
@@ -119,7 +122,8 @@ public class Grid : MonoBehaviour
                 {
                     checker[row,colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row,colm].name = "Checker:" + row + "" + colm;
-                  //  checker[row, colm].tag = "BottomCheckers";
+                    checker[row,colm].tag = "BottomCheckers";
+                    checker[row,colm].layer = 9; // layer BotC
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.green);
@@ -131,7 +135,7 @@ public class Grid : MonoBehaviour
 
                     checker[row, colm].GetComponent<Collider>().isTrigger = true;
 
-                    checker[row, colm].AddComponent<CollisionDetection>();
+                    checker[row, colm].AddComponent<AI>();
 
 
 
@@ -143,7 +147,9 @@ public class Grid : MonoBehaviour
                 {
                     checker[row, colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row, colm].name = "Checker:" + row + "" + colm;
-                   // checker[row, colm].tag = "Colm0Checkers";
+                    checker[row, colm].tag = "Colm0Checkers";
+                    checker[row, colm].layer = 10;
+
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.red);
@@ -154,7 +160,7 @@ public class Grid : MonoBehaviour
                     checker[row, colm].GetComponent<Collider>().isTrigger = true;
 
 
-                    checker[row, colm].AddComponent<CollisionDetection>();
+                    checker[row, colm].AddComponent<AI>();
 
 
 
@@ -163,7 +169,8 @@ public class Grid : MonoBehaviour
                 {
                     checker[row, colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row, colm].name = "Checker:" + row + "" + colm;
-                   // checker[row, colm].tag = "LastColCheckers";
+                    checker[row, colm].tag = "LastColCheckers";
+                    checker[row, colm].layer = 11;
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.gray);
@@ -173,34 +180,58 @@ public class Grid : MonoBehaviour
                     checker[row, colm].GetComponent<Collider>().isTrigger = true;
 
 
-                    checker[row, colm].AddComponent<CollisionDetection>();
+                    checker[row, colm].AddComponent<AI>();
 
                 }
-
-                // Checker ignore Collision
-                GameObject[] BottomCheckersObj = GameObject.FindGameObjectsWithTag("BottomCheckers");
-
-                for (int i = 0; i < BottomCheckersObj.Length; i++)
-                {
-                    Physics.IgnoreCollision(BottomCheckersObj[i].GetComponent<Collider>(), BoxArr[row, colm].GetComponent<Collider>());
-                }
-
-                GameObject[] Colm0Checkers = GameObject.FindGameObjectsWithTag("Colm0Checkers");
-
-                for (int i = 0; i < Colm0Checkers.Length; i++)
-                {
-                    Physics.IgnoreCollision(Colm0Checkers[i].GetComponent<Collider>(), BoxArr[row, colm].GetComponent<Collider>());
-                }
-
-                GameObject[] LastColCheckers = GameObject.FindGameObjectsWithTag("LastColCheckers");
-
-                for (int i = 0; i < LastColCheckers.Length; i++)
-                {
-                    Physics.IgnoreCollision(LastColCheckers[i].GetComponent<Collider>(), BoxArr[row, colm].GetComponent<Collider>());
-                }
-
+                
+               
+                
             }
         }
+        /* Instead of this used Physics layer collision matrix
+         * 
+         * 
+        // Checker ignore Collision
+        GameObject[] BottomCheckersObj = GameObject.FindGameObjectsWithTag("BottomCheckers");
+        GameObject[] Colm0Checkers = GameObject.FindGameObjectsWithTag("Colm0Checkers");
+        GameObject[] LastColCheckers = GameObject.FindGameObjectsWithTag("LastColCheckers");
+
+        
+
+        for (int i = 0; i < BottomCheckersObj.Length; i++)
+        {
+            Physics.IgnoreCollision(BottomCheckersObj[i].GetComponent<Collider>(), BottomCheckersObj[i].GetComponent<Collider>());
+        /*
+            if (Colm0Checkers[i] != null)
+            {
+                Physics.IgnoreCollision(BottomCheckersObj[i].GetComponent<Collider>(), Colm0Checkers[i].GetComponent<Collider>());
+            }
+            if (LastColCheckers[i] != null)
+            {
+                Physics.IgnoreCollision(BottomCheckersObj[i].GetComponent<Collider>(), LastColCheckers[i].GetComponent<Collider>());
+            }
+            
+        }
+
+        
+
+        for (int i = 0; i < Colm0Checkers.Length; i++)
+        {
+            Physics.IgnoreCollision(Colm0Checkers[i].GetComponent<Collider>(), BottomCheckersObj[i].GetComponent<Collider>());
+            Physics.IgnoreCollision(Colm0Checkers[i].GetComponent<Collider>(), LastColCheckers[i].GetComponent<Collider>());
+
+        }
+
+
+
+        for (int i = 0; i < LastColCheckers.Length; i++)
+        {
+            Physics.IgnoreCollision(LastColCheckers[i].GetComponent<Collider>(), BottomCheckersObj[i].GetComponent<Collider>());
+            Physics.IgnoreCollision(LastColCheckers[i].GetComponent<Collider>(), Colm0Checkers[i].GetComponent<Collider>());
+
+        }
+
+    */
         Destroy(GameObject.Find("Sphere")); // Removing excess sphere
     }
 
