@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class RowChecker : MonoBehaviour
 {
+    int colmsChecked = 0;
     void Start()
     {
-        
-    RemoveGravity();
+        colmsChecked = 0;
+        RemoveGravity();
     
     }
 
@@ -21,6 +22,7 @@ public class RowChecker : MonoBehaviour
 
     int collisionCount;
     int colmCount = 1;
+
 
     private GameObject rowChecker;
    // private GameObject colmChecker;
@@ -54,10 +56,6 @@ public class RowChecker : MonoBehaviour
 
         rowChecker = GameObject.Find("Checker:00");
         rowCheckBody = rowChecker.GetComponent<Rigidbody>();
-
-       // colmChecker = GameObject.Find(string.Format("Checker:0{0}", Stats.boardSize));
-      //  colmCheckBody = colmChecker.GetComponent<Rigidbody>();
-
         
 
         // rowChecker move up if finished checking row
@@ -66,28 +64,37 @@ public class RowChecker : MonoBehaviour
         GameObject cellToMove = new GameObject();
         // cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
 
-
-        if (collisionCount == Stats.boardSize)
+        if (colmsChecked < Stats.boardSize)
         {
-            cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
-            collisionCount = 0;
-            rowChecker.transform.position = cellToMove.transform.position;
-            colmCount++;
-            if (colmCount == Stats.boardSize)
+            if (collisionCount == Stats.boardSize)
             {
-                colmCount = 0;
+                cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
+                collisionCount = 0;
+                rowChecker.transform.position = cellToMove.transform.position;
+                colmCount++;
+
+                colmsChecked++;
+                if (colmCount == Stats.boardSize)
+                {
+                    colmCount = 0;
+                }
             }
-
+        }
+        else
+        {
             
-
+            // Stop and rePosition checker
+            rowCheckBody.velocity = new Vector3(0, 0, 0);
+            rowCheckBody.transform.position = GameObject.Find("0 0").transform.position;
+            colmsChecked = 0;
+            
+            Debug.Log("Danger search in rows complete");
         }
 
 
-        // Shooting checker
-
         if (Input.GetKeyDown("space"))
         {
-        //    rowCheckBody.velocity = new Vector3(100, 0, 0); // Overall thinking time depends on checker velocity
+        //    rowCheckBody.velocity = new Vector3(300, 0, 0); // Overall thinking time depends on checker velocity
             
         }
 

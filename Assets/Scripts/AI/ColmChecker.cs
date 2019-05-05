@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ColmChecker : MonoBehaviour
 {
+        int colmsChecked = 0;
+
 
     void Start()
     {
-
-
+        colmsChecked = 0;
 
     }
 
@@ -22,13 +23,11 @@ public class ColmChecker : MonoBehaviour
 
     int collisionCount;
     int colmCount = 1;
+ 
 
     private GameObject colChecker;
-    // private GameObject colmChecker;
-
-
     public Rigidbody colCheckBody = new Rigidbody();
-    // public Rigidbody colmCheckBody = new Rigidbody();
+
 
 
     void DangerCheck()
@@ -40,26 +39,40 @@ public class ColmChecker : MonoBehaviour
         colCheckBody = colChecker.GetComponent<Rigidbody>();
 
 
-        // rowChecker move up if finished checking colm
+        // colmChecker move right if finished checking colm
 
 
         GameObject cellToMove = new GameObject();
         // cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
 
-
-        if (collisionCount == Stats.boardSize)
+        if (colmsChecked < (Stats.boardSize + 1))
         {
-            cellToMove = GameObject.Find(string.Format("0 {0}", colmCount));
-            collisionCount = 0;
-            colChecker.transform.position = cellToMove.transform.position;
-            colmCount++;
-            if (colmCount == Stats.boardSize)
+
+            if (collisionCount == Stats.boardSize)
             {
-                colmCount = 0;
+                cellToMove = GameObject.Find(string.Format("0 {0}", colmCount));
+                collisionCount = 0;
+                colChecker.transform.position = cellToMove.transform.position;
+                colmCount++;
+                colmsChecked++;
+                
+                if (colmCount == Stats.boardSize)
+                {
+                    colmCount = 0;
+                }
+
+
+
             }
+        }
+        else
+        {
+            // Stop and rePosition checker
+            colCheckBody.velocity = new Vector3(0, 0, 0);
+            colCheckBody.transform.position = GameObject.Find("0 0").transform.position;
+            colmsChecked = 0;
 
-
-
+            Debug.Log("Danger search in colms complete");
         }
 
 
@@ -67,7 +80,7 @@ public class ColmChecker : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-            colCheckBody.velocity = new Vector3(0, 100, 0); // Overall thinking time depends on checker velocity
+       //     colCheckBody.velocity = new Vector3(0, 300, 0); // Overall thinking time depends on checker velocity
 
         }
 

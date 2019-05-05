@@ -32,15 +32,12 @@ public class GridScript : MonoBehaviour
     {
         InitializeCells();
 
-
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Destroy(GameObject.Find("Sphere"));
 
     }
 
@@ -108,11 +105,11 @@ public class GridScript : MonoBehaviour
 
                // BoxArr[row, colm].AddComponent<Renderer>();
                 BoxArr[row, colm].transform.GetComponent<Renderer>().material.color = Color.white;
-               // BoxArr[row, colm].AddComponent<CollisionDetection>();
-               //  BoxArr[row,colm].AddComponent<ChangeTest>();
-               // BoxArr[row, colm].AddComponent<Renderer>();
+                // BoxArr[row, colm].AddComponent<CollisionDetection>();
+                //  BoxArr[row,colm].AddComponent<ChangeTest>();
+                // BoxArr[row, colm].AddComponent<Renderer>();
 
-
+                Destroy(GameObject.Find("Sphere"));// Removing excess sphere
 
 
 
@@ -135,9 +132,9 @@ public class GridScript : MonoBehaviour
 
                     checker[row, colm].GetComponent<Collider>().isTrigger = true;
 
-                  //  checker[row, colm].AddComponent<AI>();
+                    //  checker[row, colm].AddComponent<AI>();
 
-
+                    Destroy(GameObject.Find("Sphere"));// Removing excess sphere
 
 
 
@@ -149,7 +146,11 @@ public class GridScript : MonoBehaviour
         }
         checker[0, 0].AddComponent<RowChecker>();
         checker[0, 1].AddComponent<ColmChecker>();
+        checker[0, 4].AddComponent<DiagnolCheckerL>();
+        checker[0, (Stats.boardSize - 5)].AddComponent<DiagnolChecker>();
         Destroy(GameObject.Find("Sphere")); // Removing excess sphere
+        Destroy(GameObject.Find("Sphere"));
+
     }
 
 
