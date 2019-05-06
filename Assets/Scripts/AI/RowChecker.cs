@@ -17,7 +17,7 @@ public class RowChecker : MonoBehaviour
     {
         if (Stats.goCheckerRow == true)
         {
-            rowCheckBody.velocity = new Vector3(300, 0, 0);
+            rowCheckBody.velocity = new Vector3(2200, 0, 0);
             DangerCheck();
         }
         if (Stats.goCheckerRow == false)
@@ -137,6 +137,19 @@ public class RowChecker : MonoBehaviour
     {
         GameObject selectedCell = new GameObject();
 
+        Debug.Log(redCount);
+        /*
+        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
+        {
+            other.transform.GetComponent<Renderer>().material.color = Color.green;
+        }
+        else if (other.transform.GetComponent<Renderer>().material.color == Color.green)
+        {
+            other.transform.GetComponent<Renderer>().material.color = Color.white;
+        }
+        */
+
+
         // RedCount
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
@@ -187,6 +200,7 @@ public class RowChecker : MonoBehaviour
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
 
                 Reset();
+                Stats.moveCount++;
 
             }
 
@@ -219,6 +233,7 @@ public class RowChecker : MonoBehaviour
             selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
+            Stats.moveCount++;
             Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 1));
 
         }
@@ -227,6 +242,7 @@ public class RowChecker : MonoBehaviour
             selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
+            Stats.moveCount++;
             Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 2));
         }
 

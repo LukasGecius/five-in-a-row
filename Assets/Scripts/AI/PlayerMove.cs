@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -28,12 +26,14 @@ public class PlayerMove : MonoBehaviour
         
     }
 
-    void Think()
+    void SearchForDanger()
     {
         Stats.goCheckerDL = true;
         Stats.goCheckerColm = true;
         Stats.goCheckerDR = true;
         Stats.goCheckerRow = true;
+
+        Stats.dangerFound = false;
     }
 
     // Update is called once per frame
@@ -141,8 +141,9 @@ public class PlayerMove : MonoBehaviour
             else if (firstMove == false && secondMove == false)
             {
                 Debug.Log("thinking");
-                Think();
-                Stats.moveCount++;
+                SearchForDanger();
+
+             //   Stats.moveCount++;
             }
 
         }

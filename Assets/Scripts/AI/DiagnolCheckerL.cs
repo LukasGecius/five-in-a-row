@@ -36,7 +36,7 @@ public class DiagnolCheckerL : MonoBehaviour
             stopped = false;
            // Debug.Log("Should go");
                 DangerCheck();
-            diagnolCheckBody.velocity = new Vector3(-300, 210, 0); // Overall thinking time depends on checker velocity
+            diagnolCheckBody.velocity = new Vector3(-1650, 1155, 0); // Overall thinking time depends on checker velocity
             
 
         }
@@ -105,6 +105,9 @@ public class DiagnolCheckerL : MonoBehaviour
         Debug.Log("Diagnol left check reset");
 
         Stats.goCheckerDL = false;
+        Stats.goCheckerColm = false;
+        Stats.goCheckerDR = false;
+        Stats.goCheckerRow = false;
         colmCount = Stats.boardSize - 5;
         checkedPosY = Stats.boardSize - 5;
         checkedPosX = 4;
@@ -195,6 +198,7 @@ public class DiagnolCheckerL : MonoBehaviour
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
 
                 Reset();
+                Stats.moveCount++;
 
             }
 
@@ -225,6 +229,7 @@ public class DiagnolCheckerL : MonoBehaviour
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
+            Stats.moveCount++;
             Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + ((int.Parse(other.name[2].ToString())) - 1));
             Debug.Log("Just exited cell: " + other.name.ToString());
 
@@ -235,7 +240,7 @@ public class DiagnolCheckerL : MonoBehaviour
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
-
+            Stats.moveCount++;
             Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + ((int.Parse(other.name[2].ToString())) + 2));
         }
        

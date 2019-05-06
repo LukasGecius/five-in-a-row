@@ -61,7 +61,7 @@ public class DiagnolChecker : MonoBehaviour
             stopped = false;
             // Debug.Log("Should go");
             DangerCheck();
-            diagnolCheckBody.velocity = new Vector3(300, 210, 0); // Overall thinking time depends on checker velocity Optimal: 1800, 1260
+            diagnolCheckBody.velocity = new Vector3(1800, 1260, 0); // Overall thinking time depends on checker velocity Optimal: 1800, 1260
 
 
         }
@@ -114,7 +114,7 @@ public class DiagnolChecker : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-            diagnolCheckBody.velocity = new Vector3(300, 210, 0); // Overall thinking time depends on checker velocity
+            diagnolCheckBody.velocity = new Vector3(1650, 1155, 0); // Overall thinking time depends on checker velocity
             stopped = false;
 
         }
@@ -127,6 +127,10 @@ public class DiagnolChecker : MonoBehaviour
         diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position;
         Debug.Log("Diagnol danger Reset");
         Stats.goCheckerDR = false;
+        Stats.goCheckerColm = false;
+        Stats.goCheckerDL = false;
+        Stats.goCheckerRow = false;
+
         stopped = true;
         hitCount = 5;
         startHit = 5;
@@ -209,6 +213,7 @@ public class DiagnolChecker : MonoBehaviour
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
 
                 Reset();
+                Stats.dangerFound = true;
 
             }
 
@@ -240,6 +245,7 @@ public class DiagnolChecker : MonoBehaviour
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
+            Stats.moveCount++;
 
             Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 1) + " " + ((int.Parse(other.name[2].ToString())) - 1));
 
@@ -250,6 +256,7 @@ public class DiagnolChecker : MonoBehaviour
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
+            Stats.moveCount++;
 
             Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + ((int.Parse(other.name[2].ToString())) - 2 ));
         }

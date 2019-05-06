@@ -27,7 +27,7 @@ public class ColmChecker : MonoBehaviour
 
             colChecker = GameObject.Find("Checker:01");
             colCheckBody = colChecker.GetComponent<Rigidbody>();
-            colCheckBody.velocity = new Vector3(0, 200, 0);
+            colCheckBody.velocity = new Vector3(0, 2000, 0);
             DangerCheck();
 
         }
@@ -167,20 +167,21 @@ public class ColmChecker : MonoBehaviour
         } // SECOND BLUE
         // THIRD BLUE IN A ROW
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
-            && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + other.name[2].ToString()).GetComponent<Renderer>().material.color != Color.red
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3) + " " + other.name[2]).GetComponent<Renderer>().material.color != Color.red
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2].ToString()).GetComponent<Renderer>().material.color != Color.red
             )
         {
-            if (int.Parse(other.name[2].ToString()) > 0 && int.Parse(other.name[2].ToString()) < Stats.boardSize - 1)  // Checking if the cell is in Board Bounds
+            if (true)  // Checking if the cell is in Board Bounds
             {
                 randomCell = rnd.Next(0, 2);
 
                 if (randomCell == 0)
                 {
-                    selectedCell = GameObject.Find((int.Parse(other.name[0].ToString())) - 3 + " " + other.name[2].ToString());
+                    selectedCell = GameObject.Find((int.Parse(other.name[0].ToString())) - 3 + " " + other.name[2]);
                 }
                 else
                 {
-                    selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2].ToString());
+                    selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2]);
                 } // picking random dangerous cell
 
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
@@ -191,11 +192,10 @@ public class ColmChecker : MonoBehaviour
                 // Hitted thrid blue
 
                 Debug.Log("BlueCount: " + blueCount);
-
+                Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) - 3 + " " + other.name[2]));
+                Debug.Log(" and in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2]);
                 Reset();
             }
-            Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) - 3 + " " + other.name[2]));
-            Debug.Log(" and in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2]);
         }
 
         // If after 2 BLUES is WHITE
@@ -231,7 +231,6 @@ public class ColmChecker : MonoBehaviour
 
 
                 Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + other.name[2]);
-            Reset();
         }
         
         collisionCount++;
