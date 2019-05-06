@@ -168,10 +168,10 @@ public class RowChecker : MonoBehaviour
         }
         // THIRD BLUE IN A ROW
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
-            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()).GetComponent<Renderer>().material.color != Color.red) // IS THERE ! - - - ! Any reds, if there is - no danger
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color != Color.red) // IS THERE ! - - - ! Any reds, if there is - no danger
         {
 
-            if (((int.Parse(other.name[2].ToString())) - 3) >= 0 && ((int.Parse(other.name[2].ToString())) + 1) < Stats.boardSize - 1)  // Checking if the cell is in Board Bounds
+            if (((int.Parse(other.name[2].ToString())) - 3) >= 0 && ((int.Parse(other.name[2].ToString()))) < Stats.boardSize - 1)  // Checking if the cell is in Board Bounds
             {
                 randomCell = rnd.Next(0, 2);
 

@@ -97,11 +97,6 @@ public class DiagnolCheckerL : MonoBehaviour
 
     }
 
-
-    int blueCount = 0;
-    int whiteCount = 0;
-    bool WhiteWasSecond;
-
     public void Reset()
     {
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
@@ -120,14 +115,29 @@ public class DiagnolCheckerL : MonoBehaviour
 
     }
 
+
+    int blueCount = 0;
+    int whiteCount = 0;
+    bool WhiteWasSecond;
+    int redCount = 0;
+
+    public System.Random rnd = new System.Random();
+    int randomCell;
+
+
+
     private void OnTriggerExit(Collider other)
     {
         hitCount--;
+        GameObject selectedCell = new GameObject();
 
-       // Debug.Log(hitCount);
+        // Debug.Log(hitCount);
 
+        if (other.transform.GetComponent<Renderer>().material.color == Color.red)
+        {
+            redCount++;
+        }
 
-            
 
         if (other.name == string.Format("{0} 0", Stats.boardSize - 1))
         {
@@ -147,6 +157,7 @@ public class DiagnolCheckerL : MonoBehaviour
             blueCount = 0;
             whiteCount = 0;
             WhiteWasSecond = false;
+            redCount = 0;
 
         }
 
@@ -165,8 +176,28 @@ public class DiagnolCheckerL : MonoBehaviour
             Debug.Log("BlueCount: " + blueCount);
         }
         // THIRD BLUE IN A ROW
-        else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0)
+        else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + (int.Parse(other.name[2].ToString()) + 3).ToString()).GetComponent<Renderer>().material.color != Color.red)
         {
+            if (int.Parse(other.name[0].ToString()) >= 0 && int.Parse(other.name[2].ToString()) < Stats.boardSize)  // Checking if the cell is in Board Bounds
+            {
+                randomCell = rnd.Next(0, 2);
+
+                if (randomCell == 0)
+                {
+                    selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (int.Parse(other.name[2].ToString()) - 1).ToString());
+                }
+                else
+                {
+                    selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + (int.Parse(other.name[2].ToString()) + 3).ToString());
+                } // picking random dangerous cell
+
+                selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+
+                Reset();
+
+            }
+
             // Hitted thrid blue
             Debug.Log("BlueCount: " + blueCount);
             Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) + 1) + " " + (int.Parse(other.name[2].ToString()) - 1));
@@ -191,13 +222,20 @@ public class DiagnolCheckerL : MonoBehaviour
         // IF AFTER TWO BLUES, ONE WHITE AGAIN BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == true)
         {
-
+            selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
+            selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+            Reset();
             Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + ((int.Parse(other.name[2].ToString())) - 1));
+            Debug.Log("Just exited cell: " + other.name.ToString());
 
         }
         // IF AFTER ONE BLUE, WAS WHITE, THEN TWO BLUES
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == false)
         {
+            selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString());
+            selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+            Reset();
+
             Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + ((int.Parse(other.name[2].ToString())) + 2));
         }
        

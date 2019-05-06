@@ -105,13 +105,13 @@ public class PlayerMove : MonoBehaviour
             else if (secondMove == true)
             {
                 Debug.Log("picking around: " + firstPosCellName);
-                int posXX = rnd.Next(-1, 1);
+                int posXX = rnd.Next(-1, 2);
                 int posYY = rnd.Next(-1, 1);
 
                 while (posXX == 0 && posYY == 0)
                 {
-                    posXX = rnd.Next(-1, 1);
-                    posYY = rnd.Next(-1, 1);
+                    posXX = rnd.Next(-1, 2);
+                    posYY = rnd.Next(-1, 2);
                 }
 
                 
