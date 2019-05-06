@@ -7,7 +7,7 @@ public class RowChecker : MonoBehaviour
     int colmsChecked = 0;
     void Start()
     {
-        colmsChecked = 0;
+
         RemoveGravity();
     
     }
@@ -15,7 +15,16 @@ public class RowChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DangerCheck();
+        if (Stats.goCheckerRow == true)
+        {
+            rowCheckBody.velocity = new Vector3(300, 0, 0);
+            DangerCheck();
+        }
+        if (Stats.goCheckerRow == false)
+        {
+            Reset();
+        }
+        
     }
     //* Calculating player choises
 
@@ -82,22 +91,33 @@ public class RowChecker : MonoBehaviour
         }
         else
         {
-            
-            // Stop and rePosition checker
-            rowCheckBody.velocity = new Vector3(0, 0, 0);
-            rowCheckBody.transform.position = GameObject.Find("0 0").transform.position;
-            colmsChecked = 0;
-            
-            Debug.Log("Danger search in rows complete");
+            Reset();
+
         }
 
 
         if (Input.GetKeyDown("space"))
         {
-        //    rowCheckBody.velocity = new Vector3(300, 0, 0); // Overall thinking time depends on checker velocity
+            rowCheckBody.velocity = new Vector3(300, 0, 0); // Overall thinking time depends on checker velocity
             
         }
 
+    }
+
+    public void Reset()
+    {
+        // Stop and rePosition checker
+        rowCheckBody.velocity = new Vector3(0, 0, 0);
+        rowCheckBody.transform.position = GameObject.Find("0 0").transform.position;
+        colmsChecked = 0;
+        Stats.goCheckerRow = false;
+
+        Stats.goCheckerDL = false;
+        Stats.goCheckerDR = false;
+        Stats.goCheckerColm = false;
+
+        //    Stats.moveCount++;
+        Debug.Log("Danger search in rows complete");
     }
 
     public string[] DangerCellName;
@@ -106,20 +126,36 @@ public class RowChecker : MonoBehaviour
     int blueCount = 0;
     int whiteCount = 0;
     bool WhiteWasSecond;
+    int redCount = 0;
+
+
+    public System.Random rnd = new System.Random();
+    int randomCell;
+
+
     private void OnTriggerExit(Collider other)
     {
+        GameObject selectedCell = new GameObject();
+
+        // RedCount
+        if (other.transform.GetComponent<Renderer>().material.color == Color.red)
+        {
+            redCount++;
+        }
+
         // RESET WHEN 2 THERE ARE TWO WHITES IN A ROW
         if (other.transform.GetComponent<Renderer>().material.color == Color.white && whiteCount == 2)
         {
             blueCount = 0;
             whiteCount = 0;
             WhiteWasSecond = false;
+            redCount = 0;
         }
 
 
         // DangerCheck
         // FOUND BLUE
-        if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0) 
+        if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0)
         {
             blueCount = 1;
             Debug.Log("BlueCount: " + blueCount);
@@ -131,13 +167,36 @@ public class RowChecker : MonoBehaviour
             Debug.Log("BlueCount: " + blueCount);
         }
         // THIRD BLUE IN A ROW
-        else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0)
+        else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()).GetComponent<Renderer>().material.color != Color.red) // IS THERE ! - - - ! Any reds, if there is - no danger
         {
-            // Hitted thrid blue
+
+            if (((int.Parse(other.name[2].ToString())) - 3) >= 0 && ((int.Parse(other.name[2].ToString())) + 1) < Stats.boardSize - 1)  // Checking if the cell is in Board Bounds
+            {
+                randomCell = rnd.Next(0, 2);
+
+                if (randomCell == 0)
+                {
+                    selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString());
+                }
+                else
+                {
+                    selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
+                } // picking random dangerous cell
+
+                selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+
+                Reset();
+
+            }
+
+
+
+
             Debug.Log("BlueCount: " + blueCount);
             Debug.Log("DANGER in pos:" + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 3));
-            Debug.Log(" and in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) + 1) );
-        }
+            Debug.Log(" and in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) + 1));
+        } // If blue is surrounded with white cells - DANGER
 
         // If after 2 BLUES is WHITE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 2)
@@ -157,16 +216,22 @@ public class RowChecker : MonoBehaviour
         // IF AFTER TWO BLUES, ONE WHITE AGAIN BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == true)
         {
-
-                Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 1));
+            selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString());
+            selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+            Reset();
+            Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 1));
 
         }
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == false)
         {
+            selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString());
+            selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+            Reset();
             Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 2));
         }
 
         collisionCount++;
+
     }
 
     // 

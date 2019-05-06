@@ -30,7 +30,25 @@ public class DiagnolCheckerL : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DangerCheck();
+
+        if (Stats.goCheckerDL == true)
+        {
+            stopped = false;
+           // Debug.Log("Should go");
+                DangerCheck();
+            diagnolCheckBody.velocity = new Vector3(-300, 210, 0); // Overall thinking time depends on checker velocity
+            
+
+        }
+        if (Stats.goCheckerDL == false)
+        {
+            Reset();
+        }
+
+
+
+
+
     }
 
 
@@ -73,30 +91,48 @@ public class DiagnolCheckerL : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-            diagnolCheckBody.velocity = new Vector3(-300, 210, 0); // Overall thinking time depends on checker velocity
-            stopped = false;
+
 
         }
 
     }
 
 
-
     int blueCount = 0;
     int whiteCount = 0;
     bool WhiteWasSecond;
+
+    public void Reset()
+    {
+        diagnolCheckBody.velocity = new Vector3(0, 0, 0);
+        diagnolCheckBody.transform.position = GameObject.Find("0 4").transform.position;
+        stopped = true;
+        Debug.Log("Diagnol left check reset");
+
+        Stats.goCheckerDL = false;
+        colmCount = Stats.boardSize - 5;
+        checkedPosY = Stats.boardSize - 5;
+        checkedPosX = 4;
+
+        hitCount = 5;
+        startHit = 5;
+        startHitB = 5;
+
+    }
+
     private void OnTriggerExit(Collider other)
     {
         hitCount--;
+
        // Debug.Log(hitCount);
-        // other.transform.GetComponent<Renderer>().material.color = Color.red;
+
+
+            
 
         if (other.name == string.Format("{0} 0", Stats.boardSize - 1))
         {
-            diagnolCheckBody.velocity = new Vector3(0, 0, 0);
-            diagnolCheckBody.transform.position = GameObject.Find("0 4").transform.position;
-            stopped = true;
-           
+            Reset();
+
         }
  
         // Debug.Log(hitCount);

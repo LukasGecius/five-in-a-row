@@ -56,7 +56,20 @@ public class DiagnolChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DangerCheck();
+        if (Stats.goCheckerDR == true)
+        {
+            stopped = false;
+            // Debug.Log("Should go");
+            DangerCheck();
+            diagnolCheckBody.velocity = new Vector3(1800, 1260, 0); // Overall thinking time depends on checker velocity
+
+
+        }
+
+        if (Stats.goCheckerDR == false)
+        {
+            Reset();
+        }
     }
     private GameObject diagnolChecker;
     public Rigidbody diagnolCheckBody = new Rigidbody();
@@ -101,34 +114,40 @@ public class DiagnolChecker : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-         //   diagnolCheckBody.velocity = new Vector3(300, 210, 0); // Overall thinking time depends on checker velocity
+            diagnolCheckBody.velocity = new Vector3(300, 210, 0); // Overall thinking time depends on checker velocity
             stopped = false;
 
         }
 
     }
 
-
+    public void Reset()
+    {
+        diagnolCheckBody.velocity = new Vector3(0, 0, 0);
+        diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position;
+        Debug.Log("Diagnol danger Reset");
+        Stats.goCheckerDR = false;
+        stopped = true;
+        hitCount = 5;
+        startHit = 5;
+        startHitB = 5;
+        checkedPosX = startPosX;
+        checkedPosY = startPosY;
+    }
 
     int blueCount = 0;
     int whiteCount = 0;
     bool WhiteWasSecond;
     private void OnTriggerExit(Collider other)
     {
+
+
+
         hitCount--;
 
         if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
         {
-            diagnolCheckBody.velocity = new Vector3(0, 0, 0);
-            diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position;
-            Debug.Log("Diagnol danger search complete");
-
-            stopped = true;
-            hitCount = 5;
-            startHit = 5;
-            startHitB = 5;
-            checkedPosX = startPosX;
-            checkedPosY = startPosY;
+            Reset();
 
 
         }

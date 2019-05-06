@@ -14,12 +14,13 @@ public class PlayerMove : MonoBehaviour
     bool secondMove;
     // Random
     public System.Random rnd = new System.Random();
+
+    public bool goCheckers = false;
     
 
 
 
 
-    int moveCount = 0;
     void Start()
     {
         firstMove = true;
@@ -27,11 +28,19 @@ public class PlayerMove : MonoBehaviour
         
     }
 
+    void Think()
+    {
+        Stats.goCheckerDL = true;
+        Stats.goCheckerColm = true;
+        Stats.goCheckerDR = true;
+        Stats.goCheckerRow = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
 
-        if (moveCount % 2 == 0) // PLAYER MOVE
+        if (Stats.moveCount % 2 == 0) // PLAYER MOVE
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -44,12 +53,12 @@ public class PlayerMove : MonoBehaviour
                     print(hitInfo.collider.gameObject.name);
                     hitInfo.transform.GetComponent<Renderer>().material.color = Color.blue;
                     selColName = hitInfo.collider.gameObject.name;
-                    moveCount++;
+                    Stats.moveCount++;
                 }
             }
         }
 
-        if (moveCount % 2 == 1) // Computer move
+        if (Stats.moveCount % 2 == 1) // Computer move
         {
             if (firstMove == true) // First computer move
             {
@@ -89,7 +98,7 @@ public class PlayerMove : MonoBehaviour
 
                 firstMove = false;
                 secondMove = true;
-                moveCount++;
+                Stats.moveCount++;
             }
 
 
@@ -116,7 +125,7 @@ public class PlayerMove : MonoBehaviour
                 if (pickAIbody.material.color != Color.blue) // if not blue, make blue
                 {
                     pickAIbody.material.color = Color.red;
-                    moveCount++;
+                    Stats.moveCount++;
                     secondMove = false;
                     Debug.Log("Moving colm - " + posXX + " Moving row - " + posYY);
                     Debug.Log("pick was not blue");
@@ -127,9 +136,13 @@ public class PlayerMove : MonoBehaviour
 
                 }
 
+            }
 
-
-
+            else if (firstMove == false && secondMove == false)
+            {
+                Debug.Log("thinking");
+                Think();
+                Stats.moveCount++;
             }
 
         }
