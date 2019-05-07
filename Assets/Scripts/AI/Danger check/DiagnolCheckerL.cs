@@ -34,7 +34,6 @@ public class DiagnolCheckerL : MonoBehaviour
         if (Stats.goCheckerDL == true)
         {
             stopped = false;
-           // Debug.Log("Should go");
                 DangerCheck();
             diagnolCheckBody.velocity = new Vector3(-1650, 1155, 0); // Overall thinking time depends on checker velocity
             
@@ -57,12 +56,12 @@ public class DiagnolCheckerL : MonoBehaviour
 
     void DangerCheck()
     {
-
+        GameObject cellToMove = new GameObject();
 
 
         diagnolChecker = GameObject.Find("Checker:04");
         diagnolCheckBody = diagnolChecker.GetComponent<Rigidbody>();
-        GameObject cellToMove = new GameObject();
+
 
         if (hitCount == 0)
         {
@@ -102,7 +101,6 @@ public class DiagnolCheckerL : MonoBehaviour
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
         diagnolCheckBody.transform.position = GameObject.Find("0 4").transform.position;
         stopped = true;
-        Debug.Log("Diagnol left check reset");
 
         Stats.goCheckerDL = false;
         Stats.goCheckerColm = false;
@@ -125,16 +123,15 @@ public class DiagnolCheckerL : MonoBehaviour
     int redCount = 0;
 
     public System.Random rnd = new System.Random();
-    int randomCell;
+    public int randomCell;
 
-
+    GameObject selectedCell = new GameObject();
 
     private void OnTriggerExit(Collider other)
     {
         hitCount--;
-        GameObject selectedCell = new GameObject();
 
-        // Debug.Log(hitCount);
+
 
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
@@ -144,7 +141,6 @@ public class DiagnolCheckerL : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
         {
             redCount = 0;
-            Debug.Log("RedCountReset");
 
         }
 
@@ -154,7 +150,6 @@ public class DiagnolCheckerL : MonoBehaviour
 
         }
  
-        // Debug.Log(hitCount);
 
 
 
@@ -176,13 +171,11 @@ public class DiagnolCheckerL : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0)
         {
             blueCount = 1;
-            Debug.Log("BlueCount: " + blueCount);
         }
         // SECOND BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 1)
         {
             blueCount = 2;
-            Debug.Log("BlueCount: " + blueCount);
         }
         // THIRD BLUE IN A ROW
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
@@ -209,23 +202,23 @@ public class DiagnolCheckerL : MonoBehaviour
             }
 
             // Hitted thrid blue
-            Debug.Log("BlueCount: " + blueCount);
-            Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) + 1) + " " + (int.Parse(other.name[2].ToString()) - 1));
-            Debug.Log(" and in pos: " + ((int.Parse(other.name[0].ToString())) - 3) + " " + (int.Parse(other.name[2].ToString()) + 3));
+            //Debug.Log("BlueCount: " + blueCount);
+            //Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) + 1) + " " + (int.Parse(other.name[2].ToString()) - 1));
+            //Debug.Log(" and in pos: " + ((int.Parse(other.name[0].ToString())) - 3) + " " + (int.Parse(other.name[2].ToString()) + 3));
         }
 
         // If after 2 BLUES is WHITE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 2)
         {
             whiteCount++;
-            Debug.Log("WhiteCount: " + whiteCount);
+           // Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = true;
         }
         // IF AFTER BLUE, WAS WHITE, THEN BLUE AGAIN
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 1)
         {
             whiteCount++;
-            Debug.Log("WhiteCount: " + whiteCount);
+          //  Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = false;
         }
 
@@ -236,8 +229,8 @@ public class DiagnolCheckerL : MonoBehaviour
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
             Stats.moveCount++;
-            Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + ((int.Parse(other.name[2].ToString())) - 1));
-            Debug.Log("Just exited cell: " + other.name.ToString());
+         //   Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + ((int.Parse(other.name[2].ToString())) - 1));
+         //   Debug.Log("Just exited cell: " + other.name.ToString());
 
         }
         // IF AFTER ONE BLUE, WAS WHITE, THEN TWO BLUES
@@ -247,7 +240,7 @@ public class DiagnolCheckerL : MonoBehaviour
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
             Stats.moveCount++;
-            Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + ((int.Parse(other.name[2].ToString())) + 2));
+        //    Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + ((int.Parse(other.name[2].ToString())) + 2));
         }
        
     }

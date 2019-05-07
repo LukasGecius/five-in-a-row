@@ -18,8 +18,8 @@ public class MoveRow : MonoBehaviour
     {
         if (Stats.goMoveRow == true)
         {
-            Debug.Log("Go");
-            moveRowBody.velocity = new Vector3(100, 0, 0);
+      //      Debug.Log("Go");
+            moveRowBody.velocity = new Vector3(1600, 0, 0);
             MoveCheck();
         }
         if (Stats.goMoveRow == false)
@@ -34,13 +34,13 @@ public class MoveRow : MonoBehaviour
     private GameObject moveRow;
 
     public Rigidbody moveRowBody = new Rigidbody();
-
+    GameObject cellToMove = new GameObject();
     void MoveCheck()
     {
         moveRow = GameObject.Find("Checker:02");
         moveRowBody = moveRow.GetComponent<Rigidbody>();
 
-        GameObject cellToMove = new GameObject();
+
 
         if (colmsChecked < Stats.boardSize)
         {
@@ -65,6 +65,13 @@ public class MoveRow : MonoBehaviour
 
 
     }
+
+    IEnumerator Stop()
+    {
+        yield return new WaitForSeconds(3);
+        Application.LoadLevel(2);
+    }
+
     public void Reset()
     {
         moveRowBody.velocity = new Vector3(0, 0, 0);
@@ -75,22 +82,134 @@ public class MoveRow : MonoBehaviour
         Stats.goMoveDL = false;
         Stats.goMoveDR = false;
 
-        Debug.Log("MoveCheck in row complete");
+     //   Debug.Log("MoveCheck in row complete");
     }
 
+    public System.Random rnd = new System.Random();
 
+    public int randomPick = 0;
 
+    GameObject selectedCell = new GameObject();
+    public int redCount = 0;
     private void OnTriggerExit(Collider other)
     {
-
-
+        /*
+        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
+        {
+            other.transform.GetComponent<Renderer>().material.color = Color.green;
+        }
+        else if (other.transform.GetComponent<Renderer>().material.color == Color.green)
+        {
+            other.transform.GetComponent<Renderer>().material.color = Color.white;
+        }
+        */
+        if (other.transform.GetComponent<Renderer>().material.color == Color.red)
+        {
+            redCount++;
+        }
+        if (other.transform.GetComponent<Renderer>().material.color != Color.red)
+        {
+            redCount = 0;
+        }
 
         if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
         {
-            Reset();
-            Debug.Log("AllGoodAndGreen?");
-
+        //    Debug.Log("No moves in row");
         }
+
+
+        if (redCount == 3
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()).GetComponent<Renderer>().material.color == Color.white
+            )
+        {
+            Debug.Log("Performing winning move");
+            System.Random rnd = new System.Random();
+            randomPick = rnd.Next(0, 2);
+            Debug.Log("option nr: " + randomPick);
+
+                if (randomPick == 0)
+                {
+                    selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
+
+                }
+                else
+                {
+                    selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString());
+                } 
+
+                selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+            Debug.Log("Colored: " + selectedCell.name);
+
+            if (GameObject.Find((int.Parse(other.name[0].ToString())).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString()) != null
+ && GameObject.Find((int.Parse(other.name[0].ToString()) ).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 4).ToString()) != null)
+            {
+                StartCoroutine(Stop());
+            }
+            else
+            {
+                Reset();
+                Stats.moveCount++;
+            }
+            
+
+
+
+        } // If redCount 3 - win
+
+        if (redCount == 2
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()).GetComponent<Renderer>().material.color == Color.white
+            )
+        {
+            Debug.Log("Performing good move");
+            System.Random rnd = new System.Random();
+            randomPick = rnd.Next(0, 2);
+            Debug.Log("option nr: " + randomPick);
+
+            if (randomPick == 0)
+            {
+                selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
+
+            }
+            else
+            {
+                selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString());
+            }
+
+            selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+            Debug.Log("Colored: " + selectedCell.name);
+            Reset();
+            Stats.moveCount++;
+        } // Performing Good move
+
+        if (redCount == 1
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+            && GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+    )
+        {
+         //   Debug.Log("Performing Ok move");
+            System.Random rnd = new System.Random();
+            randomPick = rnd.Next(0, 2);
+        //    Debug.Log("option nr: " + randomPick);
+
+            if (randomPick == 0)
+            {
+                selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
+
+            }
+            else
+            {
+                selectedCell = GameObject.Find(other.name[0].ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString());
+            }
+
+            selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
+      //      Debug.Log("Colored: " + selectedCell.name);
+            Reset();
+            Stats.moveCount++;
+        } // Performing OK move
+
+
         collisionCount++;
     }
 

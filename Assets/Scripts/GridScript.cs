@@ -120,7 +120,7 @@ public class GridScript : MonoBehaviour
                     checker[row,colm] = (GameObject)Instantiate(checkerObj, posOfChecker, Quaternion.identity) as GameObject;
                     checker[row,colm].name = "Checker:" + row + "" + colm;
                     checker[row,colm].tag = "BottomCheckers";
-                    checker[row,colm].layer = 9; // layer BotC
+                    checker[row,colm].layer = 9; // layer Bot
 
                     checker[row, colm].GetComponent<Renderer>().material.shader = Shader.Find("_Color");
                     checker[row, colm].GetComponent<Renderer>().material.SetColor("_Color", Color.green);

@@ -42,15 +42,31 @@ public class PlayerMove : MonoBehaviour
         Stats.goMoveDL = true;
         Stats.goMoveDR = true;
 
-        Debug.Log("Fired");
+      //  Debug.Log("Fired");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+
+
+            if (Physics.Raycast(ray, out hitInfo, 1000))
+            {
+                print(hitInfo.collider.gameObject.name);
+                hitInfo.transform.GetComponent<Renderer>().material.color = Color.red;
+                selColName = hitInfo.collider.gameObject.name;
+            }
+        } // debugging
+
 
         if (Stats.moveCount % 2 == 0) // PLAYER MOVE
         {
+            
+
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -59,7 +75,7 @@ public class PlayerMove : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hitInfo, 1000))
                 {
-                    print(hitInfo.collider.gameObject.name);
+            //        print(hitInfo.collider.gameObject.name);
                     hitInfo.transform.GetComponent<Renderer>().material.color = Color.blue;
                     selColName = hitInfo.collider.gameObject.name;
                     Stats.moveCount++;
@@ -114,7 +130,7 @@ public class PlayerMove : MonoBehaviour
 
             else if (secondMove == true)
             {
-                Debug.Log("picking around: " + firstPosCellName);
+             //   Debug.Log("picking around: " + firstPosCellName);
                 int posXX = rnd.Next(-1, 2);
                 int posYY = rnd.Next(-1, 1);
 
@@ -137,12 +153,12 @@ public class PlayerMove : MonoBehaviour
                     pickAIbody.material.color = Color.red;
                     Stats.moveCount++;
                     secondMove = false;
-                    Debug.Log("Moving colm - " + posXX + " Moving row - " + posYY);
+              //      Debug.Log("Moving colm - " + posXX + " Moving row - " + posYY);
                     Debug.Log("pick was not blue");
                 } // if not blue, make blue
                 else
                 {
-                    Debug.Log(" Pick was blue"); // Update() shoots the program again, and if it's still second move, it will recalculate and pick another Cell
+               //     Debug.Log(" Pick was blue"); // Update() shoots the program again, and if it's still second move, it will recalculate and pick another Cell
 
                 }
 
@@ -157,8 +173,9 @@ public class PlayerMove : MonoBehaviour
 
                 if (Stats.goCheckerDL == false && Stats.goCheckerColm == false && Stats.goCheckerDR == false && Stats.goCheckerRow == false)
                 {
-                    Stats.moveCount++;
+                //    Stats.moveCount++;
                     SmartMove();
+                    Stats.dangerNotFound = false;
                 }
 
 

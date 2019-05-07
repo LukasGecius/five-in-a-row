@@ -71,17 +71,18 @@ public class DiagnolChecker : MonoBehaviour
             Reset();
         }
     }
-    private GameObject diagnolChecker;
+    public GameObject diagnolChecker;
     public Rigidbody diagnolCheckBody = new Rigidbody();
+
 
     void DangerCheck()
     {
-
+        GameObject cellToMove = new GameObject();
 
 
         diagnolChecker = GameObject.Find(string.Format("Checker:0{0}", (Stats.boardSize - 5) ));
         diagnolCheckBody = diagnolChecker.GetComponent<Rigidbody>();
-        GameObject cellToMove = new GameObject();
+
 
         if (hitCount == 0)
         {
@@ -89,9 +90,9 @@ public class DiagnolChecker : MonoBehaviour
             if (Stats.boardSize - checkedPosX != 0)
             {
                 checkedPosX++;
-                Debug.Log("checkedPos" + checkedPosX);
+    //            Debug.Log("checkedPos" + checkedPosX);
                 cellToMove = GameObject.Find(string.Format("0 {0}", Stats.boardSize - checkedPosX));
-                Debug.Log("Jump to: " + string.Format("0 {0}", Stats.boardSize - checkedPosX));
+    //            Debug.Log("Jump to: " + string.Format("0 {0}", Stats.boardSize - checkedPosX));
                 diagnolCheckBody.transform.position = cellToMove.transform.position;
                 startHit++;
                 hitCount = startHit;
@@ -104,7 +105,7 @@ public class DiagnolChecker : MonoBehaviour
                 hitCount = startHitB;
                 startHitB++;
 
-                Debug.Log("CheckedPosY: " + checkedPosY);
+          //      Debug.Log("CheckedPosY: " + checkedPosY);
             }
         }
 
@@ -119,7 +120,7 @@ public class DiagnolChecker : MonoBehaviour
     {
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
         diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position; // Might be a sudden death, sometimes it drops value to 
-        Debug.Log("Diagnol danger Reset");
+       // Debug.Log("Diagnol danger Reset");
         Stats.goCheckerDR = false;
         Stats.goCheckerColm = false;
         Stats.goCheckerDL = false;
@@ -140,10 +141,10 @@ public class DiagnolChecker : MonoBehaviour
 
     public System.Random rnd = new System.Random();
     int randomCell;
-
+ 
     private void OnTriggerExit(Collider other)
     {
-        GameObject selectedCell = new GameObject();
+
 
         // RedCount
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
@@ -154,7 +155,7 @@ public class DiagnolChecker : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
         {
             redCount = 0;
-            Debug.Log("RedCountReset");
+      //      Debug.Log("RedCountReset");
 
         }
 
@@ -186,7 +187,7 @@ public class DiagnolChecker : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0)
         {
             blueCount = 1;
-            Debug.Log("BlueCount: " + blueCount);
+      //      Debug.Log("BlueCount: " + blueCount);
         }
         // SECOND BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 1)
@@ -201,6 +202,7 @@ public class DiagnolChecker : MonoBehaviour
 
             if (int.Parse(other.name[0].ToString()) >= 0 && int.Parse(other.name[2].ToString()) < Stats.boardSize  )  // Check is out of bounds
             {
+                GameObject selectedCell = new GameObject();
                 randomCell = rnd.Next(0, 2);
 
                 if (randomCell == 0)
@@ -237,13 +239,14 @@ public class DiagnolChecker : MonoBehaviour
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 1)
         {
             whiteCount++;
-            Debug.Log("WhiteCount: " + whiteCount);
+     //       Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = false;
         }
 
         // IF AFTER TWO BLUES, ONE WHITE AGAIN BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == true)
         {
+            GameObject selectedCell = new GameObject();
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
@@ -255,6 +258,7 @@ public class DiagnolChecker : MonoBehaviour
         // IF AFTER ONE BLUE, WAS WHITE, THEN TWO BLUES
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == false)
         {
+            GameObject selectedCell = new GameObject();
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString());
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();

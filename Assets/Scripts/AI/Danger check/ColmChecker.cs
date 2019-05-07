@@ -13,7 +13,7 @@ public class ColmChecker : MonoBehaviour
 
     }
 
-    private GameObject colChecker;
+    public GameObject colChecker;
     public Rigidbody colCheckBody = new Rigidbody();
 
 
@@ -41,24 +41,24 @@ public class ColmChecker : MonoBehaviour
 
     int collisionCount;
     int colmCount = 1;
+
+
+
  
-
-
-
 
     void DangerCheck()
     {
 
+        GameObject cellToMove = new GameObject();
 
-
-        colChecker = GameObject.Find("Checker:01");
+        GameObject colChecker = GameObject.Find("Checker:01");
         colCheckBody = colChecker.GetComponent<Rigidbody>();
 
 
         // colmChecker move right if finished checking colm
 
 
-        GameObject cellToMove = new GameObject();
+
         // cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
 
         if (colmsChecked < (Stats.boardSize + 1))
@@ -97,7 +97,7 @@ public class ColmChecker : MonoBehaviour
         colCheckBody.velocity = new Vector3(0, 0, 0);
         colCheckBody.transform.position = GameObject.Find("0 1").transform.position;
         colmsChecked = 0;
-        Debug.Log("ColmCheckerReseted");
+      //  Debug.Log("ColmCheckerReseted");
         Stats.goCheckerColm = false;
         colmsChecked = 0;
 
@@ -124,6 +124,7 @@ public class ColmChecker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        GameObject selectedCell = new GameObject();
         /*
         Debug.Log(redCount);
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
@@ -136,7 +137,7 @@ public class ColmChecker : MonoBehaviour
         }
         */
 
-        GameObject selectedCell = new GameObject();
+
 
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
@@ -145,7 +146,7 @@ public class ColmChecker : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
         {
             redCount = 0;
-            Debug.Log("RedCountReset");
+          //  Debug.Log("RedCountReset");
 
         }
 
@@ -163,13 +164,13 @@ public class ColmChecker : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0)
         {
             blueCount = 1;
-            Debug.Log("BlueCount: " + blueCount);
+          //  Debug.Log("BlueCount: " + blueCount);
         } // FOUND BLUE
         
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 1)
         {
             blueCount = 2;
-            Debug.Log("BlueCount: " + blueCount);
+          //  Debug.Log("BlueCount: " + blueCount);
         } // SECOND BLUE
         // THIRD BLUE IN A ROW
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
@@ -209,14 +210,14 @@ public class ColmChecker : MonoBehaviour
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 2)
         {
             whiteCount++;
-            Debug.Log("WhiteCount: " + whiteCount);
+          //  Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = true;
         }
         // IF AFTER BLUE, WAS WHITE, THEN BLUE AGAIN
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 1)
         {
             whiteCount++;
-            Debug.Log("WhiteCount: " + whiteCount);
+         //   Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = false;
         }
 
@@ -227,7 +228,7 @@ public class ColmChecker : MonoBehaviour
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
 
 
-                Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 1) + " " + other.name[2]);
+             //   Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 1) + " " + other.name[2]);
             Reset();
             Stats.moveCount++;
 
@@ -238,7 +239,7 @@ public class ColmChecker : MonoBehaviour
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
 
 
-                Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + other.name[2]);
+            //    Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + other.name[2]);
             Reset();
                 Stats.moveCount++;
         }
