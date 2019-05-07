@@ -17,7 +17,7 @@ public class RowChecker : MonoBehaviour
     {
         if (Stats.goCheckerRow == true)
         {
-            rowCheckBody.velocity = new Vector3(2200, 0, 0);
+            rowCheckBody.velocity = new Vector3(1600, 0, 0);
             DangerCheck();
         }
         if (Stats.goCheckerRow == false)
@@ -96,12 +96,6 @@ public class RowChecker : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown("space"))
-        {
-            rowCheckBody.velocity = new Vector3(300, 0, 0); // Overall thinking time depends on checker velocity
-            
-        }
-
     }
 
     public void Reset()
@@ -120,7 +114,6 @@ public class RowChecker : MonoBehaviour
         Debug.Log("Danger search in rows complete");
     }
 
-    public string[] DangerCellName;
 
 
     int blueCount = 0;
@@ -149,6 +142,13 @@ public class RowChecker : MonoBehaviour
         }
         */
 
+        if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
+        {
+            Reset();
+            Debug.Log("No Dangers found, reseting danger checkers.");
+            Stats.dangerNotFound = false;
+
+        }
 
         // RedCount
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)

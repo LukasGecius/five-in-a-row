@@ -124,7 +124,7 @@ public class DiagnolChecker : MonoBehaviour
     public void Reset()
     {
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
-        diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position;
+        diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position; // Might be a sudden death, sometimes it drops value to 
         Debug.Log("Diagnol danger Reset");
         Stats.goCheckerDR = false;
         Stats.goCheckerColm = false;
@@ -166,12 +166,14 @@ public class DiagnolChecker : MonoBehaviour
 
         hitCount--;
 
-        if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
-        {
-            Reset();
+        //if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
+        //{
+        //    Reset();
+        //    Debug.Log("No Dangers found, reseting danger checkers.");
+            
 
 
-        }
+        //}
         
 
 

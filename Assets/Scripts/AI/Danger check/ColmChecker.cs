@@ -36,7 +36,7 @@ public class ColmChecker : MonoBehaviour
             Reset();
         }
     }
-    //* Calculating player choises
+
 
 
     int collisionCount;
@@ -95,7 +95,7 @@ public class ColmChecker : MonoBehaviour
     public void Reset()
     {
         colCheckBody.velocity = new Vector3(0, 0, 0);
-        colCheckBody.transform.position = GameObject.Find("0 0").transform.position;
+        colCheckBody.transform.position = GameObject.Find("0 1").transform.position;
         colmsChecked = 0;
         Debug.Log("ColmCheckerReseted");
         Stats.goCheckerColm = false;
@@ -110,7 +110,7 @@ public class ColmChecker : MonoBehaviour
     
 
 
-    public string[] DangerCellName;
+
 
 
     int blueCount = 0;

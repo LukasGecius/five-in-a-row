@@ -35,6 +35,15 @@ public class PlayerMove : MonoBehaviour
 
        // Stats.dangerFound = false;
     }
+    void SmartMove()
+    {
+        Stats.goMoveRow = true;
+        Stats.goMoveCol = true;
+        Stats.goMoveDL = true;
+        Stats.goMoveDR = true;
+
+        Debug.Log("Fired");
+    }
 
     // Update is called once per frame
     void Update()
@@ -54,6 +63,7 @@ public class PlayerMove : MonoBehaviour
                     hitInfo.transform.GetComponent<Renderer>().material.color = Color.blue;
                     selColName = hitInfo.collider.gameObject.name;
                     Stats.moveCount++;
+                    Stats.dangerNotFound = true;
                 }
             }
         }
@@ -140,20 +150,21 @@ public class PlayerMove : MonoBehaviour
 
             else if (firstMove == false && secondMove == false)
             {
-                Debug.Log("thinking");
-                SearchForDanger();
-             //   CheckForMoves();
+                if (Stats.dangerNotFound == true)
+                {
+                    SearchForDanger();
+                }
 
-                if (
-                    Stats.goCheckerDL == false &&
-                    Stats.goCheckerColm == false &&
-                    Stats.goCheckerDR == false &&
-                    Stats.goCheckerRow == false
-                    ) // If there is no danger and checkers are resseted
+                if (Stats.goCheckerDL == false && Stats.goCheckerColm == false && Stats.goCheckerDR == false && Stats.goCheckerRow == false)
                 {
                     Stats.moveCount++;
-                    Debug.Log("Stopping");
+                    SmartMove();
                 }
+
+
+             //   CheckForMoves();
+
+
 
             }
 

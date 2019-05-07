@@ -147,6 +147,15 @@ public class GridScript : MonoBehaviour
         checker[0, 0].AddComponent<RowChecker>();
         checker[0, 1].AddComponent<ColmChecker>();
         checker[0, 4].AddComponent<DiagnolCheckerL>();
+
+        // Moving checker before script
+        checker[0, 2].GetComponent<Rigidbody>().transform.position = GameObject.Find("0 0").transform.position;
+        checker[0, 2].AddComponent<MoveRow>();
+
+        checker[0, (Stats.boardSize - 4)].GetComponent<Rigidbody>().transform.position = GameObject.Find("0 1").transform.position; // ColmCheckers position (by design)
+        checker[0, (Stats.boardSize - 4)].AddComponent<MoveColm>();
+
+
         checker[0, (Stats.boardSize - 5)].AddComponent<DiagnolChecker>();
         Destroy(GameObject.Find("Sphere")); // Removing excess sphere
         Destroy(GameObject.Find("Sphere"));
