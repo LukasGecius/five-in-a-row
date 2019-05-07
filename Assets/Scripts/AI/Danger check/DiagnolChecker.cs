@@ -112,12 +112,6 @@ public class DiagnolChecker : MonoBehaviour
 
         // Shooting checker
 
-        if (Input.GetKeyDown("space"))
-        {
-            diagnolCheckBody.velocity = new Vector3(1650, 1155, 0); // Overall thinking time depends on checker velocity
-            stopped = false;
-
-        }
 
     }
 

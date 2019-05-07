@@ -80,7 +80,7 @@ public class MoveColm : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        
+        /*
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
         {
             other.transform.GetComponent<Renderer>().material.color = Color.green;
@@ -89,7 +89,7 @@ public class MoveColm : MonoBehaviour
         {
             other.transform.GetComponent<Renderer>().material.color = Color.white;
         }
-        
+        */
         collisionCount++;
     }
 

@@ -148,12 +148,22 @@ public class GridScript : MonoBehaviour
         checker[0, 1].AddComponent<ColmChecker>();
         checker[0, 4].AddComponent<DiagnolCheckerL>();
 
-        // Moving checker before script
+        // Mover checkers, for them to work we need to reposition them. Because we recycled DangerChecker code
         checker[0, 2].GetComponent<Rigidbody>().transform.position = GameObject.Find("0 0").transform.position;
         checker[0, 2].AddComponent<MoveRow>();
 
         checker[0, (Stats.boardSize - 4)].GetComponent<Rigidbody>().transform.position = GameObject.Find("0 1").transform.position; // ColmCheckers position (by design)
         checker[0, (Stats.boardSize - 4)].AddComponent<MoveColm>();
+
+        checker[0, Stats.boardSize - 3].GetComponent<Rigidbody>().transform.position = GameObject.Find(string.Format("0 {0}", Stats.boardSize - 5)).transform.position;
+        checker[0, Stats.boardSize - 3].AddComponent<MoveHR>();
+
+        checker[0, Stats.boardSize - 2].GetComponent<Rigidbody>().transform.position = GameObject.Find(string.Format("0 4")).transform.position;
+        checker[0, Stats.boardSize - 2].AddComponent<MoveDL>();
+
+
+
+
 
 
         checker[0, (Stats.boardSize - 5)].AddComponent<DiagnolChecker>();

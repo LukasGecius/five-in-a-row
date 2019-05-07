@@ -78,18 +78,13 @@ public class MoveRow : MonoBehaviour
         Debug.Log("MoveCheck in row complete");
     }
 
+
+
     private void OnTriggerExit(Collider other)
     {
-        /*
-        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
-        {
-            other.transform.GetComponent<Renderer>().material.color = Color.green;
-        }
-        else if (other.transform.GetComponent<Renderer>().material.color == Color.green)
-        {
-            other.transform.GetComponent<Renderer>().material.color = Color.white;
-        }
-        */
+
+
+
         if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
         {
             Reset();
