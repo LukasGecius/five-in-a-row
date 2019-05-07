@@ -27,7 +27,7 @@ public class ColmChecker : MonoBehaviour
 
             colChecker = GameObject.Find("Checker:01");
             colCheckBody = colChecker.GetComponent<Rigidbody>();
-            colCheckBody.velocity = new Vector3(0, 2000, 0);
+            colCheckBody.velocity = new Vector3(0, 1600, 0);
             DangerCheck();
 
         }
@@ -142,6 +142,12 @@ public class ColmChecker : MonoBehaviour
         {
             redCount++;
         }
+        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
+        {
+            redCount = 0;
+            Debug.Log("RedCountReset");
+
+        }
 
         // RESET WHEN 2 THERE ARE TWO WHITES IN A ROW
         if (other.transform.GetComponent<Renderer>().material.color == Color.white && whiteCount == 2)
@@ -195,6 +201,7 @@ public class ColmChecker : MonoBehaviour
                 Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) - 3 + " " + other.name[2]));
                 Debug.Log(" and in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2]);
                 Reset();
+                Stats.moveCount++;
             }
         }
 
@@ -222,6 +229,7 @@ public class ColmChecker : MonoBehaviour
 
                 Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 1) + " " + other.name[2]);
             Reset();
+            Stats.moveCount++;
 
         }
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && whiteCount == 1 && blueCount == 2 && WhiteWasSecond == false)
@@ -231,6 +239,8 @@ public class ColmChecker : MonoBehaviour
 
 
                 Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + other.name[2]);
+            Reset();
+                Stats.moveCount++;
         }
         
         collisionCount++;

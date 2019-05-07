@@ -157,6 +157,12 @@ public class DiagnolChecker : MonoBehaviour
             redCount++;
         }
 
+        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
+        {
+            redCount = 0;
+            Debug.Log("RedCountReset");
+
+        }
 
         hitCount--;
 
@@ -213,7 +219,7 @@ public class DiagnolChecker : MonoBehaviour
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
 
                 Reset();
-                Stats.dangerFound = true;
+                Stats.moveCount++;
 
             }
 

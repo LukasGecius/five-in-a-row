@@ -156,6 +156,13 @@ public class RowChecker : MonoBehaviour
             redCount++;
         }
 
+        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
+        {
+            redCount = 0;
+            Debug.Log("RedCountReset");
+
+        }
+
         // RESET WHEN 2 THERE ARE TWO WHITES IN A ROW
         if (other.transform.GetComponent<Renderer>().material.color == Color.white && whiteCount == 2)
         {

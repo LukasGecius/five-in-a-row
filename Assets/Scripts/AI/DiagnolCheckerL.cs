@@ -141,6 +141,12 @@ public class DiagnolCheckerL : MonoBehaviour
             redCount++;
         }
 
+        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
+        {
+            redCount = 0;
+            Debug.Log("RedCountReset");
+
+        }
 
         if (other.name == string.Format("{0} 0", Stats.boardSize - 1))
         {

@@ -11,6 +11,6 @@
     public static bool stopped = false;
     public static int moveCount = 0;
 
-    public static bool dangerFound;
+   // public static bool dangerFound;
 
 }

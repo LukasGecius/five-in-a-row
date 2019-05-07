@@ -33,7 +33,7 @@ public class PlayerMove : MonoBehaviour
         Stats.goCheckerDR = true;
         Stats.goCheckerRow = true;
 
-        Stats.dangerFound = false;
+       // Stats.dangerFound = false;
     }
 
     // Update is called once per frame
@@ -142,8 +142,19 @@ public class PlayerMove : MonoBehaviour
             {
                 Debug.Log("thinking");
                 SearchForDanger();
+             //   CheckForMoves();
 
-             //   Stats.moveCount++;
+                if (
+                    Stats.goCheckerDL == false &&
+                    Stats.goCheckerColm == false &&
+                    Stats.goCheckerDR == false &&
+                    Stats.goCheckerRow == false
+                    ) // If there is no danger and checkers are resseted
+                {
+                    Stats.moveCount++;
+                    Debug.Log("Stopping");
+                }
+
             }
 
         }
