@@ -11,3 +11,5 @@ And if you manage to get 5 in a row, don't be so sure if you yet won.
 **Sometimes computer does not accept your victory,** and continues to move, and even might **declare his own victory!**
 
 You must be very *persuasive* to actually win.
+
+**Somehow won? Nice! You won't be lucky next time!**
