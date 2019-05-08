@@ -382,7 +382,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Red wins! (Or... Yeah)
+  m_Text: Red wins! (Or... yeah)
 --- !u!222 &1447046692
 CanvasRenderer:
   m_ObjectHideFlags: 0
