@@ -4,32 +4,28 @@ using UnityEngine;
 
 public class RowChecker : MonoBehaviour
 {
-    public int randomCell;
-    public System.Random rnd = new System.Random();
-
     int colmsChecked = 0;
     void Start()
     {
 
         RemoveGravity();
+        Reset();
 
-
-
-}
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Stats.goCheckerRow == true)
         {
-            rowCheckBody.velocity = new Vector3(1600, 0, 0);
+            rowCheckBody.velocity = new Vector3(2200, 0, 0);
             DangerCheck();
         }
         if (Stats.goCheckerRow == false)
         {
             Reset();
         }
-        
+
     }
     //* Calculating player choises
 
@@ -39,7 +35,7 @@ public class RowChecker : MonoBehaviour
 
 
     private GameObject rowChecker;
-   // private GameObject colmChecker;
+    // private GameObject colmChecker;
 
 
     public Rigidbody rowCheckBody = new Rigidbody();
@@ -47,8 +43,8 @@ public class RowChecker : MonoBehaviour
 
     public void RemoveGravity()
     {
-        for(int i = 0; i < Stats.boardSize; i++)
-            for(int f = 0; f < Stats.boardSize; f++)
+        for (int i = 0; i < Stats.boardSize; i++)
+            for (int f = 0; f < Stats.boardSize; f++)
             {
                 rowChecker = GameObject.Find(string.Format("Checker:{0}{1}", i.ToString(), f.ToString()));
                 if (rowChecker != null)
@@ -62,20 +58,20 @@ public class RowChecker : MonoBehaviour
 
     // string ignoreTag = "Cell";
 
- 
+
     void DangerCheck()
     {
-        GameObject cellToMove = new GameObject();
+
 
 
         rowChecker = GameObject.Find("Checker:00");
         rowCheckBody = rowChecker.GetComponent<Rigidbody>();
-        
+
 
         // rowChecker move up if finished checking row
 
-        
 
+        GameObject cellToMove = new GameObject();
         // cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
 
         if (colmsChecked < Stats.boardSize)
@@ -101,6 +97,12 @@ public class RowChecker : MonoBehaviour
         }
 
 
+        if (Input.GetKeyDown("space"))
+        {
+            rowCheckBody.velocity = new Vector3(300, 0, 0); // Overall thinking time depends on checker velocity
+
+        }
+
     }
 
     public void Reset()
@@ -110,15 +112,17 @@ public class RowChecker : MonoBehaviour
         rowCheckBody.transform.position = GameObject.Find("0 0").transform.position;
         colmsChecked = 0;
         Stats.goCheckerRow = false;
-
+        collisionCount = 0;
+        colmCount = 0;
         Stats.goCheckerDL = false;
         Stats.goCheckerDR = false;
         Stats.goCheckerColm = false;
 
         //    Stats.moveCount++;
-   //     Debug.Log("Danger search in rows complete");
+        Debug.Log("Danger search in rows complete");
     }
 
+    public string[] DangerCellName;
 
 
     int blueCount = 0;
@@ -127,14 +131,16 @@ public class RowChecker : MonoBehaviour
     int redCount = 0;
 
 
+    public System.Random rnd = new System.Random();
+    int randomCell;
+    int winCheck;
+    int resetCount;
 
-
-    GameObject selectedCell = new GameObject();
     private void OnTriggerExit(Collider other)
     {
-        
+        GameObject selectedCell = new GameObject();
 
-     //   Debug.Log(redCount);
+        Debug.Log(redCount);
         /*
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
         {
@@ -146,25 +152,41 @@ public class RowChecker : MonoBehaviour
         }
         */
 
-        if (other.name == string.Format("{0} {0}", Stats.boardSize - 1))
-        {
-            Reset();
-        //    Debug.Log("No Dangers found, reseting danger checkers.");
-            Stats.dangerNotFound = false;
-
-        }
 
         // RedCount
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
             redCount++;
+            winCheck = 0;
         }
 
         if (other.transform.GetComponent<Renderer>().material.color == Color.white)
         {
             redCount = 0;
-        //    Debug.Log("RedCountReset");
+            resetCount++;
+            //      Debug.Log("ResetCount: " + resetCount);
+            //      Debug.Log("RedCountReset");
 
+        }
+
+        if (other.transform.GetComponent<Renderer>().material.color == Color.blue)
+        {
+            winCheck++;
+            Debug.Log("Wincheck: " + winCheck);
+
+        }
+
+        if (winCheck == 5)
+        {
+            Application.LoadLevel(3);
+        }
+
+        if (resetCount > 1)
+        {
+            winCheck = 0;
+            resetCount = 0;
+            //    redCount = 0;
+            //     blueCount = 0;
         }
 
         // RESET WHEN 2 THERE ARE TWO WHITES IN A ROW
@@ -182,13 +204,13 @@ public class RowChecker : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0)
         {
             blueCount = 1;
-         //   Debug.Log("BlueCount: " + blueCount);
+            Debug.Log("BlueCount: " + blueCount);
         }
         // SECOND BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 1)
         {
             blueCount = 2;
-          //  Debug.Log("BlueCount: " + blueCount);
+            Debug.Log("BlueCount: " + blueCount);
         }
         // THIRD BLUE IN A ROW
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
@@ -197,7 +219,6 @@ public class RowChecker : MonoBehaviour
 
             if (((int.Parse(other.name[2].ToString())) - 3) >= 0 && ((int.Parse(other.name[2].ToString()))) < Stats.boardSize - 1)  // Checking if the cell is in Board Bounds
             {
-                randomCell = 0;
                 randomCell = rnd.Next(0, 2);
 
                 if (randomCell == 0)
@@ -219,23 +240,23 @@ public class RowChecker : MonoBehaviour
 
 
 
-          //  Debug.Log("BlueCount: " + blueCount);
-         //   Debug.Log("DANGER in pos:" + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 3));
-          //  Debug.Log(" and in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) + 1));
+        //    Debug.Log("BlueCount: " + blueCount);
+        //    Debug.Log("DANGER in pos:" + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 3));
+        //    Debug.Log(" and in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) + 1));
         } // If blue is surrounded with white cells - DANGER
 
         // If after 2 BLUES is WHITE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 2)
         {
             whiteCount++;
-           // Debug.Log("WhiteCount: " + whiteCount);
+         //   Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = true;
         }
         // IF AFTER BLUE, WAS WHITE, THEN BLUE AGAIN
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 1)
         {
             whiteCount++;
-          //  Debug.Log("WhiteCount: " + whiteCount);
+         //   Debug.Log("WhiteCount: " + whiteCount);
             WhiteWasSecond = false;
         }
 
@@ -255,7 +276,7 @@ public class RowChecker : MonoBehaviour
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
             Reset();
             Stats.moveCount++;
-        //    Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 2));
+         //   Debug.Log("Danger in pos: " + other.name[0] + " " + ((int.Parse(other.name[2].ToString())) - 2));
         }
 
         collisionCount++;

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WinScreen.unity
     guid: 06c1583474336ce41b5d98db3a5ac3c6
+  - enabled: 1
+    path: Assets/Scenes/BlueWins.unity
+    guid: 0946777221ca5ca40bf54d0a11778756
   m_configObjects: {}

@@ -10,17 +10,19 @@ public class PlayerMove : MonoBehaviour
     public string firstPosCellName;
     bool firstMove;
     bool secondMove;
+    bool started = false;
     // Random
     public System.Random rnd = new System.Random();
 
     public bool goCheckers = false;
-    
 
+    
 
 
 
     void Start()
     {
+
         firstMove = true;
         secondMove = false;
         
@@ -33,7 +35,7 @@ public class PlayerMove : MonoBehaviour
         Stats.goCheckerDR = true;
         Stats.goCheckerRow = true;
 
-       // Stats.dangerFound = false;
+        Stats.dangerNotFound = false;
     }
     void SmartMove()
     {
@@ -48,34 +50,28 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo;
 
-
-            if (Physics.Raycast(ray, out hitInfo, 1000))
-            {
-                print(hitInfo.collider.gameObject.name);
-                hitInfo.transform.GetComponent<Renderer>().material.color = Color.red;
-                selColName = hitInfo.collider.gameObject.name;
-            }
-        } // debugging
 
 
         if (Stats.moveCount % 2 == 0) // PLAYER MOVE
         {
-            
+            Stats.goMoveCol = false;
+            Stats.goMoveDL = false;
+            Stats.goMoveDR = false;
+            Stats.goMoveRow = false;
+            started = true;
 
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hitInfo;
-
+ // prevension of playing sound on start
 
                 if (Physics.Raycast(ray, out hitInfo, 1000))
                 {
-            //        print(hitInfo.collider.gameObject.name);
+                    AudioSource popAudio = GameObject.Find("PopSoundPlayer").GetComponent<AudioSource>();
+                    popAudio.Play();
+                    //        print(hitInfo.collider.gameObject.name);
                     hitInfo.transform.GetComponent<Renderer>().material.color = Color.blue;
                     selColName = hitInfo.collider.gameObject.name;
                     Stats.moveCount++;
@@ -125,6 +121,7 @@ public class PlayerMove : MonoBehaviour
                 firstMove = false;
                 secondMove = true;
                 Stats.moveCount++;
+
             }
 
 
@@ -171,11 +168,11 @@ public class PlayerMove : MonoBehaviour
                     SearchForDanger();
                 }
 
-                if (Stats.goCheckerDL == false && Stats.goCheckerColm == false && Stats.goCheckerDR == false && Stats.goCheckerRow == false)
+                if (Stats.goCheckerDL == false && Stats.goCheckerColm == false && Stats.goCheckerDR == false)
                 {
                 //    Stats.moveCount++;
                     SmartMove();
-                    Stats.dangerNotFound = false;
+                 //   Stats.dangerNotFound = false;
                 }
 
 

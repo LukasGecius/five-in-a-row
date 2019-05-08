@@ -39,6 +39,7 @@ public class MoveHR : MonoBehaviour
         checkedPosY = checkedPosY - CountOffset;
         startPosX = checkedPosX;
         startPosY = checkedPosY;
+        Reset();
     }
     int colmsChecked = 0;
     bool stopped = false;
@@ -56,6 +57,11 @@ public class MoveHR : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Stats.moveCount % 2 == 0)
+        {
+            Reset();
+        }
+
         if (Stats.goMoveDR == true)
         {
             stopped = false;
@@ -66,12 +72,12 @@ public class MoveHR : MonoBehaviour
 
         }
 
-        if (Stats.goMoveDR == false)
+       else if (Stats.goMoveDR == false)
         {
             Reset();
         }
     }
-    private GameObject diagnolChecker;
+    public GameObject diagnolChecker;
     public Rigidbody diagnolCheckBody = new Rigidbody();
 
     void DangerCheck()
@@ -85,9 +91,10 @@ public class MoveHR : MonoBehaviour
 
         if (hitCount == 0)
         {
-            GameObject cellToMove = new GameObject();
+ ;
             if (Stats.boardSize - checkedPosX != 0)
             {
+                GameObject cellToMove = new GameObject();
                 checkedPosX++;
                // Debug.Log("checkedPos" + checkedPosX);
                 cellToMove = GameObject.Find(string.Format("0 {0}", Stats.boardSize - checkedPosX));
@@ -98,6 +105,7 @@ public class MoveHR : MonoBehaviour
             }
             if (Stats.boardSize - checkedPosX == 0 && stopped == false)
             {
+                GameObject cellToMove = new GameObject();
                 cellToMove = GameObject.Find(string.Format("{0} 0", Stats.boardSize - checkedPosY));
                 diagnolCheckBody.transform.position = cellToMove.transform.position;
                 checkedPosY++;
@@ -107,11 +115,12 @@ public class MoveHR : MonoBehaviour
        //         Debug.Log("CheckedPosY: " + checkedPosY);
             }
         }
-
     }
 
     public void Reset()
     {
+        diagnolChecker = GameObject.Find(string.Format("Checker:0{0}", (Stats.boardSize - 3)));
+        diagnolCheckBody = diagnolChecker.GetComponent<Rigidbody>();
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
         diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position; // Might be a sudden death, sometimes it drops value to 
      //   Debug.Log("MoveDR reset");
@@ -138,11 +147,12 @@ public class MoveHR : MonoBehaviour
 
     public int randomPick = 0;
 
-    GameObject selectedCell = new GameObject();
+
     public int redCount = 0;
 
     private void OnTriggerExit(Collider other)
-    {
+    {    GameObject selectedCell = new GameObject();
+
         hitCount--;
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
@@ -159,6 +169,10 @@ public class MoveHR : MonoBehaviour
         }
 
         if (redCount == 3
+ 
+                 && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
+                 && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()) != null
+
                  && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
                  && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()).GetComponent<Renderer>().material.color == Color.white
    )
@@ -184,21 +198,30 @@ public class MoveHR : MonoBehaviour
             if (GameObject.Find((int.Parse(other.name[0].ToString()) + 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString()) != null
              && GameObject.Find((int.Parse(other.name[0].ToString()) - 4).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 4).ToString()) != null)
             {
+                Stats.moveCount++;
                 StartCoroutine(Stop());
+                Stats.moveMade = true;
+
             }
             else
             {
-                Reset();
                 Stats.moveCount++;
+                Reset();
+                Stats.moveMade = true;
+
             }
         }
 
-        if (redCount == 2
+       else if (redCount == 2
+
+            && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()) != null
+
     && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
     && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()).GetComponent<Renderer>().material.color == Color.white
     )
         {
-         //   Debug.Log("Performing good move");
+            Debug.Log("Performing good move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
          //   Debug.Log("option nr: " + randomPick);
@@ -214,17 +237,22 @@ public class MoveHR : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-   //         Debug.Log("Colored: " + selectedCell.name);
-            Reset();
+            //         Debug.Log("Colored: " + selectedCell.name);
             Stats.moveCount++;
-        } // Performing Good move\
+            Reset();
+            Stats.moveMade = true;
 
-        if (redCount == 1
+        } 
+
+      else  if (redCount == 1
+
+            && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()) != null
     && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
     && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
 )
         {
-          //  Debug.Log("Performing Ok move");
+            Debug.Log("Performing Ok move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
          //   Debug.Log("option nr: " + randomPick);
@@ -240,9 +268,11 @@ public class MoveHR : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-         //   Debug.Log("Colored: " + selectedCell.name);
-            Reset();
+            //   Debug.Log("Colored: " + selectedCell.name);
             Stats.moveCount++;
+            Reset();
+            Stats.moveMade = true;
+
         } // Performing OK move
 
         /*

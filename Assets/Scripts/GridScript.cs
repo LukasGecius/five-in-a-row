@@ -102,14 +102,9 @@ public class GridScript : MonoBehaviour
                 BoxArr[row, colm].AddComponent<Rigidbody>();
                 BoxArr[row, colm].GetComponent<Rigidbody>().useGravity = false;
                 BoxArr[row, colm].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-
-               // BoxArr[row, colm].AddComponent<Renderer>();
                 BoxArr[row, colm].transform.GetComponent<Renderer>().material.color = Color.white;
-                // BoxArr[row, colm].AddComponent<CollisionDetection>();
-                //  BoxArr[row,colm].AddComponent<ChangeTest>();
-                // BoxArr[row, colm].AddComponent<Renderer>();
 
-                Destroy(GameObject.Find("Sphere"));// Removing excess sphere
+             //   Destroy(GameObject.Find("Sphere"));// Removing excess sphere
 
 
 

@@ -8,7 +8,8 @@ public class MoveColm : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        colmsChecked = 0;   
+        colmsChecked = 0;
+        Reset();
     }
 
     public GameObject moveCol;
@@ -17,6 +18,11 @@ public class MoveColm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Stats.moveCount % 2 == 0)
+        {
+            Reset();
+        }
+
         if (Stats.goMoveCol == true)
         {
           //  Debug.Log(string.Format("Checker:0{0}", (Stats.boardSize - 4)));
@@ -26,14 +32,14 @@ public class MoveColm : MonoBehaviour
             moveColBody.velocity = new Vector3(0, 1600, 0);
             MoveCheck();
         }
-        if (Stats.goMoveCol == false)
+       else if (Stats.goMoveCol == false)
         {
             Reset();
         }
     }
 
     int collisionCount;
-    int colmCount = 1;
+    int colmCount = 2;
 
     void MoveCheck()
     {
@@ -65,15 +71,17 @@ public class MoveColm : MonoBehaviour
             //  Reset();
         }
     }
-    public int redCount = 0;
-    public int randomPick;
+
 
 
     public void Reset()
     {
+        moveCol = GameObject.Find(string.Format("Checker:0{0}", (Stats.boardSize - 4)));
+        moveColBody = moveCol.GetComponent<Rigidbody>();
         moveColBody.velocity = new Vector3(0, 0, 0);
         moveColBody.transform.position = GameObject.Find("0 1").transform.position;
         colmsChecked = 0;
+        colmCount = 2;
         Stats.goMoveCol = false;
         Stats.goMoveDL = false;
         Stats.goMoveDR = false;
@@ -85,6 +93,8 @@ public class MoveColm : MonoBehaviour
         yield return new WaitForSeconds(3);
         Application.LoadLevel(2);
     }
+    public int redCount;
+    public int randomPick;
 
     private void OnTriggerExit(Collider other)
     {
@@ -103,12 +113,15 @@ public class MoveColm : MonoBehaviour
         }
 
         if (redCount == 3
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (other.name[2].ToString()).ToString()) != null
+             && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((other.name[2].ToString())).ToString()) != null
+
     && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (other.name[2].ToString()).ToString()).GetComponent<Renderer>().material.color == Color.white
     && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((other.name[2].ToString())).ToString()).GetComponent<Renderer>().material.color == Color.white
     )
         {
             GameObject selectedCell = new GameObject();
-            //   Debug.Log("Performing winning move");
+               Debug.Log("Performing winning move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
         //    Debug.Log("option nr: " + randomPick);
@@ -124,19 +137,23 @@ public class MoveColm : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-         //   Debug.Log("Colored: " + selectedCell.name);
-
+            //   Debug.Log("Colored: " + selectedCell.name);
+            Stats.moveCount++;
+            Stats.moveMade = true;
             StartCoroutine(Stop());
+
 
         } // If redCount 3 - win
 
-        if (redCount == 2
+       else if (redCount == 2
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (other.name[2].ToString()).ToString()) != null
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((other.name[2].ToString())).ToString()) != null
     && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (other.name[2].ToString()).ToString()).GetComponent<Renderer>().material.color == Color.white
     && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((other.name[2].ToString())).ToString()).GetComponent<Renderer>().material.color == Color.white
     )
         {
             GameObject selectedCell = new GameObject();
-            //      Debug.Log("Performing Good move");
+                  Debug.Log("Performing Good move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
           //  Debug.Log("option nr: " + randomPick);
@@ -152,20 +169,23 @@ public class MoveColm : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-         //   Debug.Log("Colored: " + selectedCell.name);
-
-            Reset();
+            //   Debug.Log("Colored: " + selectedCell.name);
             Stats.moveCount++;
+            Stats.moveMade = true;
+            Reset();
+
 
         }
 
-        if (redCount == 1
+      else  if (redCount == 1
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (other.name[2].ToString()).ToString()) != null
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((other.name[2].ToString())).ToString()) != null
 && GameObject.Find(((int.Parse(other.name[0].ToString())) + 1).ToString() + " " + (other.name[2].ToString()).ToString()).GetComponent<Renderer>().material.color == Color.white
 && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((other.name[2].ToString())).ToString()).GetComponent<Renderer>().material.color == Color.white
 )
         {
             GameObject selectedCell = new GameObject();
-            //      Debug.Log("Performing Ok move move");
+                  Debug.Log("Performing Ok move move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
        //     Debug.Log("option nr: " + randomPick);
@@ -181,11 +201,12 @@ public class MoveColm : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-         //   Debug.Log("Colored: " + selectedCell.name);
-
+            //   Debug.Log("Colored: " + selectedCell.name);
+            Stats.moveCount++;
+            Stats.moveMade = true;
             Reset();
             redCount = 0;
-            Stats.moveCount++;
+
 
         }
 

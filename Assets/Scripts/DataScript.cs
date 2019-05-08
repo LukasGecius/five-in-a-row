@@ -14,7 +14,8 @@
 
     public static bool stopped = false;
     public static int moveCount = 0;
-
+    public static bool moveMade = false;
     public static bool dangerNotFound;
+    public static bool shootPopSound = false;
 
 }

@@ -12,7 +12,7 @@ public class MoveDL : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        Reset();
     }
     int colmsChecked = 0;
     bool stopped = false;
@@ -31,8 +31,15 @@ public class MoveDL : MonoBehaviour
     void Update()
     {
 
+        if (Stats.moveCount % 2 == 0)
+        {
+            Reset();
+        }
+
         if (Stats.goMoveDL == true)
         {
+
+
             stopped = false;
             // Debug.Log("Should go");
             DangerCheck();
@@ -40,7 +47,7 @@ public class MoveDL : MonoBehaviour
 
 
         }
-        if (Stats.goMoveDL == false)
+        else if (Stats.goMoveDL == false)
         {
             Reset();
         }
@@ -99,6 +106,8 @@ public class MoveDL : MonoBehaviour
 
     public void Reset()
     {
+        diagnolChecker = GameObject.Find(string.Format("Checker:0{0}", Stats.boardSize - 2));
+        diagnolCheckBody = diagnolChecker.GetComponent<Rigidbody>();
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
         diagnolCheckBody.transform.position = GameObject.Find("0 4").transform.position;
         stopped = true;
@@ -123,11 +132,12 @@ public class MoveDL : MonoBehaviour
 
     public int randomPick = 0;
 
-    GameObject selectedCell = new GameObject();
+
     public int redCount = 0;
 
     private void OnTriggerExit(Collider other)
     {
+        GameObject selectedCell = new GameObject();
         hitCount--;
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
@@ -143,6 +153,9 @@ public class MoveDL : MonoBehaviour
             Debug.Log("No DiagnolL moves in row");
         }
         if (redCount == 3
+
+            && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()) != null
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 3).ToString()) != null
                  && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
                  && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 3).ToString()).GetComponent<Renderer>().material.color == Color.white
    )
@@ -168,27 +181,35 @@ public class MoveDL : MonoBehaviour
             if (GameObject.Find((int.Parse(other.name[0].ToString()) + 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()) != null
              && GameObject.Find((int.Parse(other.name[0].ToString()) - 4).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 4).ToString()) != null)
             {
-            StartCoroutine(Stop());
+                Stats.moveCount++;
+                StartCoroutine(Stop());
+                Stats.moveMade = true;
+
             }
             else
             {
-                Reset();
                 Stats.moveCount++;
+                Reset();
+                Stats.moveMade = true;
+
             }
 
 
 
         }// If redCount 3 - win
 
-        if (redCount == 2
+       else if (redCount == 2
+            && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()) != null
+             && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString()) != null
+
     && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
     && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString()).GetComponent<Renderer>().material.color == Color.white
     )
         {
-         //   Debug.Log("Performing good move");
+            Debug.Log("Performing good move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
-      //      Debug.Log("option nr: " + randomPick);
+            Debug.Log("option nr: " + randomPick);
 
             if (randomPick == 0)
             {
@@ -201,17 +222,21 @@ public class MoveDL : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-        //    Debug.Log("Colored: " + selectedCell.name);
-            Reset();
+            //    Debug.Log("Colored: " + selectedCell.name);
             Stats.moveCount++;
+            Reset();
+
         } // Performing Good move\
 
-        if (redCount == 1
+       else if (redCount == 1
+            && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1)) != null
+            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 3).ToString()) != null
+
     && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
     && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 3).ToString()).GetComponent<Renderer>().material.color == Color.white
 )
         {
-         //   Debug.Log("Performing Ok move");
+            Debug.Log("Performing Ok move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
           //  Debug.Log("option nr: " + randomPick);
@@ -227,9 +252,11 @@ public class MoveDL : MonoBehaviour
             }
 
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-        //    Debug.Log("Colored: " + selectedCell.name);
-            Reset();
+            //    Debug.Log("Colored: " + selectedCell.name);
             Stats.moveCount++;
+            Reset();
+            Stats.moveMade = true;
+
         } // Performing OK move
 
     }

@@ -15,6 +15,8 @@ public class LevelManager : MonoBehaviour {
         {
             Debug.Log("New level load: " + name);
             Application.LoadLevel(name);
+            Stats.moveCount = 0;
+            Stats.shootPopSound = false;
         }
 
     }
