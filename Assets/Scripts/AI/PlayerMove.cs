@@ -77,7 +77,7 @@ public class PlayerMove : MonoBehaviour
             Text text;
             text = GameObject.Find("MoveText").GetComponent<Text>();
 
-            text.text = "Computer is thinking, looking stupid as he does so";
+            text.text = "Computer is thinking (but he's not very bright yet)";
 
             if (firstMove == true) // First computer move
             {
