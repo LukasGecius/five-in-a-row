@@ -48,9 +48,6 @@ public class PlayerMove : MonoBehaviour
 
             text.text = "It is for you to move!";
 
-            
-            
-
             Stats.goMoveCol = false;
             Stats.goMoveDL = false;
             Stats.goMoveDR = false;
@@ -118,7 +115,6 @@ public class PlayerMove : MonoBehaviour
             }
             else if (secondMove == true)
             {
-             //   Debug.Log("picking around: " + firstPosCellName);
                 int posXX = rnd.Next(-1, 2);
                 int posYY = rnd.Next(-1, 1);
                 while (posXX == 0 && posYY == 0)
@@ -136,13 +132,8 @@ public class PlayerMove : MonoBehaviour
                     pickAIbody.material.color = Color.red;
                     Stats.moveCount++;
                     secondMove = false;
-              //      Debug.Log("Moving colm - " + posXX + " Moving row - " + posYY);
-            //        Debug.Log("pick was not blue");
-                } // if not blue, make blue
-                else
-                {
-               //     Debug.Log(" Pick was blue"); // Update() shoots the program again, and if it's still second move, it will recalculate and pick another Cell
-                }
+
+                } 
             }
             else if (firstMove == false && secondMove == false)
             {
@@ -152,11 +143,8 @@ public class PlayerMove : MonoBehaviour
                 }
                 if (Stats.goCheckerDL == false && Stats.goCheckerColm == false && Stats.goCheckerDR == false)
                 {
-                //    Stats.moveCount++;
                     SmartMove();
-                 //   Stats.dangerNotFound = false;
                 }
-             //   CheckForMoves();
             }
         }
     }

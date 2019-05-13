@@ -12,6 +12,7 @@ public class MoveHR : MonoBehaviour
     int startPosX;
     int startPosY;
     // Start is called before the first frame update
+
     void Start()
     {
         if (boardSize == 8)
@@ -41,7 +42,7 @@ public class MoveHR : MonoBehaviour
     int hitCount = 5;
     int startHit = 5;
     int startHitB = 5;
-    // Update is called once per frame
+
     void Update()
     {
         if (Stats.moveCount % 2 == 0)
@@ -62,6 +63,7 @@ public class MoveHR : MonoBehaviour
     }
     public GameObject diagnolChecker;
     public Rigidbody diagnolCheckBody = new Rigidbody();
+
     void DangerCheck()
     {
         diagnolChecker = GameObject.Find(string.Format("Checker:0{0}", (Stats.boardSize - 3)));
@@ -73,9 +75,9 @@ public class MoveHR : MonoBehaviour
             {
                 GameObject cellToMove = new GameObject();
                 checkedPosX++;
-               // Debug.Log("checkedPos" + checkedPosX);
+
                 cellToMove = GameObject.Find(string.Format("0 {0}", Stats.boardSize - checkedPosX));
-               // Debug.Log("Jump to: " + string.Format("0 {0}", Stats.boardSize - checkedPosX));
+
                 diagnolCheckBody.transform.position = cellToMove.transform.position;
                 startHit++;
                 hitCount = startHit;
@@ -88,7 +90,7 @@ public class MoveHR : MonoBehaviour
                 checkedPosY++;
                 hitCount = startHitB;
                 startHitB++;
-       //         Debug.Log("CheckedPosY: " + checkedPosY);
+
             }
         }
     }
@@ -102,7 +104,7 @@ public class MoveHR : MonoBehaviour
         diagnolCheckBody.velocity = new Vector3(0, 0, 0);
         diagnolCheckBody.transform.position = GameObject.Find(string.Format("0 {0}", (Stats.boardSize - 5))).transform.position; // Might be a sudden death, sometimes it drops value to 
         }
-        //   Debug.Log("MoveDR reset");
+
         Stats.goMoveDR = false;
         Stats.goMoveRow = false;
         Stats.goMoveCol = false;
@@ -139,16 +141,16 @@ public class MoveHR : MonoBehaviour
         }
         if (redCount == 3
  
-                 && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
-                 && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()) != null
-                 && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
-                 && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()).GetComponent<Renderer>().material.color == Color.white
+        && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
+         && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()) != null
+          && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+           && GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString()).GetComponent<Renderer>().material.color == Color.white
    )
         {
-        //    Debug.Log("Performing winning move");
+
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
-          //  Debug.Log("option nr: " + randomPick);
+
             if (randomPick == 0)
             {
                 selectedCell = GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
@@ -158,7 +160,7 @@ public class MoveHR : MonoBehaviour
                 selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 3).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 3).ToString());
             }
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-        //    Debug.Log("Colored: " + selectedCell.name);
+
             if (GameObject.Find((int.Parse(other.name[0].ToString()) + 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 2).ToString()) != null
              && GameObject.Find((int.Parse(other.name[0].ToString()) - 4).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 4).ToString()) != null)
             {
@@ -174,16 +176,16 @@ public class MoveHR : MonoBehaviour
             }
         }
        else if (redCount == 2
-            && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
-            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()) != null
-    && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
-    && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()).GetComponent<Renderer>().material.color == Color.white
+        && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
+         && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()) != null
+          && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+           && GameObject.Find(((int.Parse(other.name[0].ToString())) - 2).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 2).ToString()).GetComponent<Renderer>().material.color == Color.white
     )
         {
-          //  Debug.Log("Performing good move");
+
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
-         //   Debug.Log("option nr: " + randomPick);
+
             if (randomPick == 0)
             {
                 selectedCell = GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
@@ -200,15 +202,14 @@ public class MoveHR : MonoBehaviour
         } 
       else  if (redCount == 1
             && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()) != null
-            && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()) != null
-    && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
-    && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+             && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()) != null
+              && GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString()).GetComponent<Renderer>().material.color == Color.white
+               && GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString()).GetComponent<Renderer>().material.color == Color.white
 )
         {
-       //     Debug.Log("Performing Ok move");
             System.Random rnd = new System.Random();
             randomPick = rnd.Next(0, 2);
-         //   Debug.Log("option nr: " + randomPick);
+
             if (randomPick == 0)
             {
                 selectedCell = GameObject.Find((int.Parse(other.name[0].ToString()) + 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) + 1).ToString());
@@ -218,13 +219,10 @@ public class MoveHR : MonoBehaviour
                 selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 1).ToString() + " " + ((int.Parse(other.name[2].ToString())) - 1).ToString());
             }
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-            //   Debug.Log("Colored: " + selectedCell.name);
+
             Stats.moveCount++;
             Reset();
             Stats.moveMade = true;
         } // Performing OK move
-        /*
-        */
-        // DONT FORGET TO RESET IF CONDITION IS MET
     }
 }

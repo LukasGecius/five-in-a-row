@@ -25,9 +25,6 @@ public class GridScript : MonoBehaviour
     // Checker Transform
     public Transform checkerPrefab;
 
-
-
-
     void Start()
     {
         InitializeCells();
@@ -40,9 +37,7 @@ public class GridScript : MonoBehaviour
         Destroy(GameObject.Find("Sphere"));
 
     }
-
-
-
+    
     void InitializeCells()
     {
         GameObject cellObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -60,9 +55,7 @@ public class GridScript : MonoBehaviour
         cellScale.x = newCellsize.x / cellSize.x;
         cellScale.y = newCellsize.y / cellSize.y;
         cellScale.z = newCellsize.z / cellSize.z;
-        
-
-
+    
         cellSize = newCellsize; // From base size to new Size
 
         cellObject.transform.localScale = new Vector3(cellScale.x - 5, cellScale.y - 5, cellScale.z + 10);
@@ -71,9 +64,6 @@ public class GridScript : MonoBehaviour
         // adjusting grid mapping
         gridOffset.x = -(gridSize.x / 2) + cellSize.x / 2;
         gridOffset.y = -(gridSize.y / 2) + cellSize.y / 2;
-
-
-
 
         // Instanciating all cells in grid and assigning
         BoxArr = new GameObject[rows, cols];
@@ -86,8 +76,7 @@ public class GridScript : MonoBehaviour
         {
             for (int colm = 0; colm < cols; colm++)
             {
-               
-                
+
                 // Object position
                  Vector3 posOfGSphere = new Vector3(colm * cellSize.x + gridOffset.x, row * cellSize.y + gridOffset.y, 0);
                  Vector3 posOfChecker = new Vector3(colm * cellSize.x + gridOffset.x, row * cellSize.y + gridOffset.y, 0 );
@@ -105,8 +94,6 @@ public class GridScript : MonoBehaviour
                 BoxArr[row, colm].transform.GetComponent<Renderer>().material.color = Color.white;
 
              //   Destroy(GameObject.Find("Sphere"));// Removing excess sphere
-
-
 
                 // Adding checkers
 
@@ -131,12 +118,8 @@ public class GridScript : MonoBehaviour
 
                     Destroy(GameObject.Find("Sphere"));// Removing excess sphere
 
-
-
-
                 }
  
-                
             }
         }
         checker[0, 0].AddComponent<RowChecker>();
@@ -156,19 +139,12 @@ public class GridScript : MonoBehaviour
         checker[0, Stats.boardSize - 2].GetComponent<Rigidbody>().transform.position = GameObject.Find(string.Format("0 4")).transform.position;
         checker[0, Stats.boardSize - 2].AddComponent<MoveDL>();
 
-
-
-
-
-
         checker[0, (Stats.boardSize - 5)].AddComponent<DiagnolChecker>();
         Destroy(GameObject.Find("Sphere")); // Removing excess sphere
         Destroy(GameObject.Find("Sphere"));
 
     }
-
-
-
+    
             void CheckGridSize()
     {
         Gizmos.DrawWireCube(transform.position, gridSize);

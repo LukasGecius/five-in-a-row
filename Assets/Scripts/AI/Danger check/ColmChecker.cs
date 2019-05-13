@@ -11,7 +11,7 @@ public class ColmChecker : MonoBehaviour
     }
     private GameObject colChecker;
     public Rigidbody colCheckBody = new Rigidbody();
-    // Update is called once per frame
+
     void Update()
     {
         if (Stats.goCheckerColm == true)
@@ -35,7 +35,7 @@ public class ColmChecker : MonoBehaviour
         colCheckBody = colChecker.GetComponent<Rigidbody>();
         // colmChecker move right if finished checking colm
         GameObject cellToMove = new GameObject();
-        // cellToMove = GameObject.Find(string.Format("{0} 0", colmCount));
+
         if (colmsChecked < (Stats.boardSize + 1))
         {
             if (collisionCount == Stats.boardSize)
@@ -66,7 +66,7 @@ public class ColmChecker : MonoBehaviour
         colCheckBody.transform.position = GameObject.Find("0 0").transform.position;
         }
         colmsChecked = 0;
-   //     Debug.Log("ColmCheckerReseted");
+
         Stats.goCheckerColm = false;
         colmCount = 2;
         collisionCount = 0;
@@ -85,17 +85,7 @@ public class ColmChecker : MonoBehaviour
     int randomCell;
     private void OnTriggerExit(Collider other)
     {
-        /*
-        Debug.Log(redCount);
-        if (other.transform.GetComponent<Renderer>().material.color == Color.white)
-        {
-            other.transform.GetComponent<Renderer>().material.color = Color.green;
-        }
-        else if (other.transform.GetComponent<Renderer>().material.color == Color.green)
-        {
-            other.transform.GetComponent<Renderer>().material.color = Color.white;
-        }
-        */
+        
         GameObject selectedCell = new GameObject();
         if (other.transform.GetComponent<Renderer>().material.color == Color.red)
         {
@@ -106,13 +96,12 @@ public class ColmChecker : MonoBehaviour
         {
             redCount = 0;
             resetCount++;
-      //      Debug.Log("ResetCount: " + resetCount);
-            //      Debug.Log("RedCountReset");
+
         }
         if (other.transform.GetComponent<Renderer>().material.color == Color.blue)
         {
             winCheck++;
-        //    Debug.Log("Wincheck: " + winCheck);
+
         }
         if (winCheck == 5)
         {
@@ -122,8 +111,7 @@ public class ColmChecker : MonoBehaviour
         {
             winCheck = 0;
             resetCount = 0;
-        //    redCount = 0;
-       //     blueCount = 0;
+
         }
         // RESET WHEN 2 THERE ARE TWO WHITES IN A ROW
         if (other.transform.GetComponent<Renderer>().material.color == Color.white && whiteCount == 2)
@@ -137,12 +125,12 @@ public class ColmChecker : MonoBehaviour
         if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 0)
         {
             blueCount = 1;
-      //      Debug.Log("BlueCount: " + blueCount);
+
         } // FOUND BLUE
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 1)
         {
             blueCount = 2;
-        //    Debug.Log("BlueCount: " + blueCount);
+
         } // SECOND BLUE
         // THIRD BLUE IN A ROW
         else if (other.transform.GetComponent<Renderer>().material.color == Color.blue && blueCount == 2 && whiteCount == 0 && redCount == 0
@@ -162,10 +150,7 @@ public class ColmChecker : MonoBehaviour
                     selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2]);
                 } // picking random dangerous cell
                 selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-                // Hitted thrid blue
-          //      Debug.Log("BlueCount: " + blueCount);
-           //     Debug.Log("DANGER in pos:" + ((int.Parse(other.name[0].ToString())) - 3 + " " + other.name[2]));
-           //     Debug.Log(" and in pos: " + ((int.Parse(other.name[0].ToString())) + 1) + " " + other.name[2]);
+
                 Reset();
                 Stats.moveCount++;
             }
@@ -174,14 +159,14 @@ public class ColmChecker : MonoBehaviour
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 2)
         {
             whiteCount++;
-         //   Debug.Log("WhiteCount: " + whiteCount);
+
             WhiteWasSecond = true;
         }
         // IF AFTER BLUE, WAS WHITE, THEN BLUE AGAIN
         else if (other.transform.GetComponent<Renderer>().material.color == Color.white && blueCount == 1)
         {
             whiteCount++;
-        //    Debug.Log("WhiteCount: " + whiteCount);
+
             WhiteWasSecond = false;
         }
         // IF AFTER TWO BLUES, ONE WHITE AGAIN BLUE
@@ -189,7 +174,7 @@ public class ColmChecker : MonoBehaviour
         {
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 1) + " " + other.name[2]);
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-          //  Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 1) + " " + other.name[2]);
+
             Reset();
             Stats.moveCount++;
         }
@@ -197,7 +182,7 @@ public class ColmChecker : MonoBehaviour
         {
             selectedCell = GameObject.Find(((int.Parse(other.name[0].ToString())) - 2) + " " + other.name[2]);
             selectedCell.transform.GetComponent<Renderer>().material.color = Color.red;
-           // Debug.Log("Danger in pos: " + ((int.Parse(other.name[0].ToString())) - 2) + " " + other.name[2]);
+
             Reset();
             Stats.moveCount++;
         }
